@@ -26,8 +26,6 @@
         "assets/css/styles.css"
       ],
       "js": [
-        "assets/js/jquery.js",
-        "assets/js/showdown.min.js",
         "assets/js/content.js"
       ],
       "run_at": "document_idle"
