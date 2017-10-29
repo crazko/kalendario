@@ -3,8 +3,8 @@ const manifest = chrome.runtime.getManifest();
 const settings = {
   client_id: manifest.oauth2.client_id,
   client_secret: 'usq5dT6yGdw6sjdlE65XWHp5',
-  redirect_uri: chrome.identity.getRedirectURL('provider_cb')
-}
+  redirect_uri: chrome.identity.getRedirectURL('provider_cb'),
+};
 
 const apiUrl = {
   webAuth: 'https://accounts.google.com/o/oauth2/v2/auth',
@@ -12,21 +12,21 @@ const apiUrl = {
   tokenInfo: 'https://www.googleapis.com/oauth2/v3/tokeninfo',
   calendar: 'https://www.googleapis.com/calendar/v3/calendars',
   calendarList: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
-}
+};
 
 const logDebug = (...args: any[]) => {
   if (debug && console && console.log) {
     console.log.apply(console, args);
   }
-}
+};
 
 const getActualDate = () => new Date();
 
 const getExpirationDate = (dateFrom: Date, expiration: number): number => {
-    dateFrom.setMinutes(dateFrom.getMinutes() + expiration);
+  dateFrom.setMinutes(dateFrom.getMinutes() + expiration);
 
-    return dateFrom.getTime();
-}
+  return dateFrom.getTime();
+};
 
 /* ----------------------------------------------------- */
 
@@ -38,15 +38,18 @@ function initialize() {
   params += '&access_type=offline'; // offline not working with 'token' response type
   params += '&prompt=consent';
 
-  chrome.identity.launchWebAuthFlow({
+  chrome.identity.launchWebAuthFlow(
+    {
       url: apiUrl.webAuth + params,
-      interactive: true
-    }, function (responseUrl) {
+      interactive: true,
+    },
+    function(responseUrl) {
       if (responseUrl) {
         let code;
 
         // Get code from redirect url
-        if(responseUrl.indexOf('=') >= 0) { // For chrome
+        if (responseUrl.indexOf('=') >= 0) {
+          // For chrome
           code = responseUrl.split('=')[1];
         }
 
@@ -55,20 +58,22 @@ function initialize() {
       } else {
         logDebug(chrome.runtime.lastError);
       }
-    }
+    },
   );
 }
 
 function validateTokens() {
   fetch(`${apiUrl.tokenInfo}?access_token=${localStorage['access_token']}`, {
-    method: 'GET'
-  }).then(function(response) {
-    if (response.status != 200) {
-      revokeTokens();
-    }
-  }).catch(function(error) {
-    logDebug(error);
-  });
+    method: 'GET',
+  })
+    .then(function(response) {
+      if (response.status != 200) {
+        revokeTokens();
+      }
+    })
+    .catch(function(error) {
+      logDebug(error);
+    });
 }
 
 function revokeTokens() {
@@ -80,16 +85,19 @@ function revokeTokens() {
   fetch(`${apiUrl.token}${params}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  }).then(function(response) {
-    return response.json();
-  }).then(function(data) {
-    localStorage['access_token'] = data.access_token;
-    localStorage['expiration'] = getExpirationDate(getActualDate(), 45);
-  }).catch(function(error) {
-    logDebug(error);
-  });
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      localStorage['access_token'] = data.access_token;
+      localStorage['expiration'] = getExpirationDate(getActualDate(), 45);
+    })
+    .catch(function(error) {
+      logDebug(error);
+    });
 }
 
 function getTokens(code: any) {
@@ -102,17 +110,20 @@ function getTokens(code: any) {
   fetch(`${apiUrl.token}${params}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  }).then(function(response) {
-    return response.json();
-  }).then(function(data) {
-    localStorage['access_token'] = data.access_token;
-    localStorage['refresh_token'] = data.refresh_token;
-    localStorage['expiration'] = getExpirationDate(getActualDate(), 45);
-  }).catch(function(error) {
-    logDebug(error);
-  });
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      localStorage['access_token'] = data.access_token;
+      localStorage['refresh_token'] = data.refresh_token;
+      localStorage['expiration'] = getExpirationDate(getActualDate(), 45);
+    })
+    .catch(function(error) {
+      logDebug(error);
+    });
 }
 
 /* ----------------------------------------------------- */
@@ -126,7 +137,9 @@ function getTokens(code: any) {
 function getEventData(calendarId: string, eventId: string) {
   // Filter out default calendars, ie. Week number, Holidays
   if (!calendarId || calendarId.indexOf('#') > -1) {
-    throw new Error(`Event '${eventId}' doesn't have proper calendar '${calendarId}'.`);
+    throw new Error(
+      `Event '${eventId}' doesn't have proper calendar '${calendarId}'.`,
+    );
   }
 
   let params = `/${calendarId}/events/${eventId}`;
@@ -134,13 +147,15 @@ function getEventData(calendarId: string, eventId: string) {
   return fetch(apiUrl.calendar + params, {
     method: 'GET',
     headers: {
-      'Authorization': `Bearer  ${localStorage['access_token']}`
-    }
-  }).then(function(response) {
-    return response.json();
-  }).catch(function(error) {
-    logDebug(error);
-  });
+      Authorization: `Bearer  ${localStorage['access_token']}`,
+    },
+  })
+    .then(function(response) {
+      return response.json();
+    })
+    .catch(function(error) {
+      logDebug(error);
+    });
 }
 
 /**
@@ -154,16 +169,19 @@ function sendEvent(event: Object, message: string) {
     return false;
   }
 
-  chrome.tabs.query({
-    url: 'https://calendar.google.com/calendar*'
-  }, function (tabs) {
-    for (let i = 0, len = tabs.length; i < len; i++) {
-      chrome.tabs.sendMessage(tabs[i].id, {
-        msg: message,
-        event: event
-      });
-    }
-  });
+  chrome.tabs.query(
+    {
+      url: 'https://calendar.google.com/calendar*',
+    },
+    function(tabs) {
+      for (let i = 0, len = tabs.length; i < len; i++) {
+        chrome.tabs.sendMessage(tabs[i].id, {
+          msg: message,
+          event: event,
+        });
+      }
+    },
+  );
 }
 
 /* ----------------------------------------------------- */
@@ -176,13 +194,15 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.msg === 'events') {
-    if (typeof localStorage['expiration'] === 'undefined' || localStorage['expiration'] < new Date().getTime()) {
+    if (
+      typeof localStorage['expiration'] === 'undefined' ||
+      localStorage['expiration'] < new Date().getTime()
+    ) {
       revokeTokens();
     }
 
     const events = request.events;
     const calendars = JSON.parse(localStorage['calendars']);
-
 
     for (let i = 0, len = events.length; i < len; i++) {
       const calendar = calendars[events[i].calendarName];
@@ -190,7 +210,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       getEventData(calendar, events[i].id)
         .then(function(event: any) {
           sendEvent(event, 'show');
-        }).catch(function(error: string) {
+        })
+        .catch(function(error: string) {
           logDebug(error);
         });
     }
@@ -205,18 +226,22 @@ const parseCalendarList = (calendarList: any[]) => {
 };
 
 const getCalendarList = () => {
-    fetch(apiUrl.calendarList, {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer  ' + localStorage['access_token']
-      }
-    }).then(function(response) {
+  fetch(apiUrl.calendarList, {
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer  ' + localStorage['access_token'],
+    },
+  })
+    .then(function(response) {
       return response.json();
-    }).then(function(data) {
+    })
+    .then(function(data) {
       return parseCalendarList(data.items);
-    }).then(function(parsedData) {
+    })
+    .then(function(parsedData) {
       localStorage['calendars'] = JSON.stringify(parsedData);
-    }).catch(function(error) {
+    })
+    .catch(function(error) {
       logDebug(error);
     });
 };

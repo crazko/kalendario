@@ -1,5 +1,9 @@
 {
   "private": true,
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
   "scripts": {
     "dev": "webpack",
     "watch": "webpack -w",
@@ -10,6 +14,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
+    "prettier": "1.7.4",
     "ts-loader": "^3.1.0",
     "typescript": "^2.5.3",
     "webpack": "^3.8.1"
