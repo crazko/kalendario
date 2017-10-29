@@ -14,7 +14,7 @@ const apiUrl = {
   calendarList: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
 }
 
-const logDebug = function() {
+const logDebug = () => {
   if (debug && console && console.log) {
     console.log.apply(console, arguments);
   }
@@ -23,20 +23,14 @@ const logDebug = function() {
 /**
  * @return {Date}
  */
-const getActualDate = function() {
-  return new Date();
-}
+const getActualDate = () => new Date();
 
 /**
  * @param {Date} dateFrom
  * @param {number} expiration time in minutes
  * @return {number}
  */
-const getExpirationDate = function(dateFrom, expiration) {
-  dateFrom.setMinutes(dateFrom.getMinutes() + expiration);
-
-  return dateFrom.getTime();
-}
+const getExpirationDate = (dateFrom, expiration) => dateFrom.setMinutes(dateFrom.getMinutes() + expiration).getTime();
 
 /* ----------------------------------------------------- */
 
@@ -68,9 +62,7 @@ function initialize() {
 }
 
 function validateTokens() {
-  let params = `?access_token=${localStorage['access_token']}`;
-
-  fetch(apiUrl.tokenInfo + params, {
+  fetch(`${apiUrl.tokenInfo}?access_token=${localStorage['access_token']}`, {
     method: 'GET'
   }).then(function(response) {
     if (response.status != 200) {
@@ -87,7 +79,7 @@ function revokeTokens() {
   params += `&client_secret=${settings.client_secret}`;
   params += '&grant_type=refresh_token';
 
-  fetch(apiUrl.token + params, {
+  fetch(`${apiUrl.token}${params}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -109,7 +101,7 @@ function getTokens(code) {
   params += `&redirect_uri=${settings.redirect_uri}`;
   params += '&grant_type=authorization_code';
 
-  fetch(apiUrl.token + params, {
+  fetch(`${apiUrl.token}${params}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -206,19 +198,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
   }
 });
-
-const foo = {"journal":"tqis1rps45rv6fn4im711u1be8@group.calendar.google.com",
-"my calendar":"crazko@gmail.com",
-"Via Cassa Events":"hk7h9pyjyi@gmail.com",
-"ness":"8pabtsvrhq2flt3krqdacm505c@group.calendar.google.com",
-"trainings":"71dkv7jucnfhe2ti1vi1dqa7ho@group.calendar.google.com",
-"Slovenské mená":"innova.sk_t584jl5ialdo9ou36jqa9lt0lk@group.calendar.google.com",
-"work":"bi3m1jd5a6s7ulbl2hoffc8svo@group.calendar.google.com",
-"Team Omega Ω":"kr388d703grv2ouqj17gp8ua3g@group.calendar.google.com",
-"Ness KDC Internal Devs":"vt4g9ldh8265c8qn0dh7gadea8@group.calendar.google.com",
-"Contacts":"#contacts@group.v.calendar.google.com",
-"Sviatky na Slovensku":"sk.slovak#holiday@group.v.calendar.google.com",
-"Week Numbers":"p#weeknum@group.v.calendar.google.com"};
 
 const parseCalendarList = calendarList => {
   return calendarList.reduce((list, calendar) => {

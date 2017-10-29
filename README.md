@@ -12,7 +12,6 @@ Install from [Chrome Web Store](https://chrome.google.com/webstore/detail/calex-
 - shows descriptions in:
     - the agenda view
     - the search results
-- supports markdown format thanks to [showdownjs/showdown](https://github.com/showdownjs/showdown)
 
 ### Browsers
 Tested in:
@@ -42,4 +41,5 @@ Tested in:
 ### API calls
 
 - [CalendarList: list](https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list)
--
+- [Events: get](https://developers.google.com/google-apps/calendar/v3/reference/events/get)
+

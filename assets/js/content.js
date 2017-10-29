@@ -4,6 +4,7 @@
  * @param {string} description
  */
 const addDescription = function(eventId, description) {
+  // TODO: remove jQuery
 	let $event = $('#' + eventId);
 
   // Avoid duplicated content
@@ -36,13 +37,6 @@ const getAllEvents = () => {
 /* ----------------------------------------------------- */
 
 const calendarContainer = document.querySelector('header[role="banner"]');
-// const calendarContainer = document.querySelector('div[role="main"]');
-const markdownConverter = new showdown.Converter({
-  noHeaderId: true,
-  simplifiedAutoLink: true,
-  excludeTrailingPunctuationFromURLs: true,
-  strikethrough: true
-});
 
 // Check for change in calendar.
 // Gather all events and send them to background to process
@@ -68,7 +62,6 @@ observer.observe(calendarContainer, {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.msg === 'show') {
     let event = request.event;
-    // let html = markdownConverter.makeHtml(event.description);
     console.log(event.description)
     // addDescription(event.id, html);
   }
