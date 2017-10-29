@@ -1,7 +1,12 @@
+export interface IEvent {
+  id: string;
+  calendarName: string;
+}
+
 /**
  * Gets all events from calendar.
  */
-export const getAllEvents = () =>
+export const getAllEvents = (): IEvent[] =>
   Array.from(document.querySelectorAll('div[role="row"]'))
     .filter(row => row.children[1] && row.children[1].children.length === 3)
     .map(event => {

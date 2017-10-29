@@ -1,8 +1,7 @@
 import { logDebug } from './utils';
 import initialize, { revokeTokens } from './api/authorization';
 import { getEvent, sendEvent, getCalendarList } from './api/calendar';
-
-/* ----------------------------------------------------- */
+import { IEvent } from 'event';
 
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install') {
@@ -19,20 +18,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       revokeTokens();
     }
 
-    const events = request.events;
     const calendars = JSON.parse(localStorage['calendars']);
 
-    for (let i = 0, len = events.length; i < len; i++) {
-      const calendar = calendars[events[i].calendarName];
+    request.events.forEach((event: IEvent) => {
+      const calendarId = calendars[event.calendarName];
 
-      getEvent(calendar, events[i].id)
+      getEvent(calendarId, event.id)
         .then(event => {
           sendEvent(event, 'showEvent');
         })
         .catch(error => {
           logDebug(error);
         });
-    }
+    });
   }
 });
 
