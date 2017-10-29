@@ -1,18 +1,12 @@
-/**
- * Adds description to given event.
- * @param {string} eventId
- * @param {string} description
- */
-const addDescription = function(eventId, description) {
-  // TODO: remove jQuery
-	let $event = $('#' + eventId);
+const addDescription = (eventId: string, description: string) => {
+	// let $event = $('#' + eventId);
 
   // Avoid duplicated content
-  if ($event.find('.calex__description')) {
-    $event.find('.calex__description').remove();
-  }
+//   if ($event.find('.calex__description')) {
+    // $event.find('.calex__description').remove();
+//   }
 
-  $event.append(`<div class="calex__description">${description}</div>`);
+//   $event.append(`<div class="calex__description">${description}</div>`);
 }
 
 /**
@@ -22,14 +16,17 @@ const getAllEvents = () => {
   const rows = document.querySelectorAll('div[role="row"]');
 
   return Array.from(rows)
-    .filter(row => row.children[1] && row.children[1].children.length === 3)
-    .map(event => {
-      let eventid = atob(event.children[1].children[1].children[0].dataset.eventid);
-      eventid = eventid.split(' ');
+    .filter((row) => row.children[1] && row.children[1].children.length === 3)
+    .map((event) => {
+      const eventElement = event.children[1].children[1].children[0] as HTMLElement;
+      const calendarElement = event.children[1].children[2].children[0] as HTMLElement;
+
+      const eventid = atob(eventElement.dataset.eventid);
+      const data = eventid.split(' ');
 
       return {
-        id: eventid[0],
-        calendarName: event.children[1].children[2].children[0].dataset.text
+        id: data[0],
+        calendarName: calendarElement.dataset.text
       }
   });
 }

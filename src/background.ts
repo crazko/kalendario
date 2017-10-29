@@ -14,23 +14,19 @@ const apiUrl = {
   calendarList: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
 }
 
-const logDebug = () => {
+const logDebug = (...args: any[]) => {
   if (debug && console && console.log) {
-    console.log.apply(console, arguments);
+    console.log.apply(console, args);
   }
 }
 
-/**
- * @return {Date}
- */
 const getActualDate = () => new Date();
 
-/**
- * @param {Date} dateFrom
- * @param {number} expiration time in minutes
- * @return {number}
- */
-const getExpirationDate = (dateFrom, expiration) => dateFrom.setMinutes(dateFrom.getMinutes() + expiration).getTime();
+const getExpirationDate = (dateFrom: Date, expiration: number): number => {
+    dateFrom.setMinutes(dateFrom.getMinutes() + expiration);
+
+    return dateFrom.getTime();
+}
 
 /* ----------------------------------------------------- */
 
@@ -47,6 +43,8 @@ function initialize() {
       interactive: true
     }, function (responseUrl) {
       if (responseUrl) {
+        let code;
+
         // Get code from redirect url
         if(responseUrl.indexOf('=') >= 0) { // For chrome
           code = responseUrl.split('=')[1];
@@ -94,7 +92,7 @@ function revokeTokens() {
   });
 }
 
-function getTokens(code) {
+function getTokens(code: any) {
   let params = `?code=${code}`;
   params += `&client_id=${settings.client_id}`;
   params += `&client_secret=${settings.client_secret}`;
@@ -125,10 +123,10 @@ function getTokens(code) {
  * @param {string} eventId
  * @returns {Promise.<Object>} event
  */
-function getEventData(calendarId, eventId) {
+function getEventData(calendarId: string, eventId: string) {
   // Filter out default calendars, ie. Week number, Holidays
   if (!calendarId || calendarId.indexOf('#') > -1) {
-    return Promise.reject(`Event '${eventId}' doesn't have proper calendar '${calendarId}'.`);
+    throw new Error(`Event '${eventId}' doesn't have proper calendar '${calendarId}'.`);
   }
 
   let params = `/${calendarId}/events/${eventId}`;
@@ -150,7 +148,7 @@ function getEventData(calendarId, eventId) {
  * @param {Object} event
  * @param {string} message to be added to request
  */
-function sendEvent(event, message) {
+function sendEvent(event: Object, message: string) {
   // Do not send event without description
   if (!event.hasOwnProperty('description')) {
     return false;
@@ -190,16 +188,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       const calendar = calendars[events[i].calendarName];
 
       getEventData(calendar, events[i].id)
-        .then(function(event) {
+        .then(function(event: any) {
           sendEvent(event, 'show');
-        }).catch(function(error) {
+        }).catch(function(error: string) {
           logDebug(error);
         });
     }
   }
 });
 
-const parseCalendarList = calendarList => {
+const parseCalendarList = (calendarList: any[]) => {
   return calendarList.reduce((list, calendar) => {
     list[calendar.summary] = calendar.id;
     return list;

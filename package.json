@@ -1,3 +1,17 @@
 {
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev": "webpack",
+    "watch": "webpack -w",
+    "prod": "webpack -p --env.production"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.51",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "ts-loader": "^3.1.0",
+    "typescript": "^2.5.3",
+    "webpack": "^3.8.1"
+  }
 }
