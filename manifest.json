@@ -1,0 +1,48 @@
+{
+  "name": "__MSG_extName__",
+  "short_name": "__MSG_extShortName__",
+  "description": "__MSG_extDesc__",
+  "version": "0.2.0",
+  "homepage_url": "https://github.com/crazko/calex",
+  "manifest_version": 2,
+  "default_locale": "en",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnwHaL2nptIi5HkgxauDRJeC2g+LrsSXMEGjqM6iOhduRTSKZGb9ueTVgrBqSiQ/UZNwSCGdWlZPEk9GarCt0efECNtWk+nCZcBwujPpnONcdp0Zwmvw6lEdr4kHs/Z97zwNRoJAZqMl7cd6jvT3M7eGOxRqFuMNnL+d7kN5h7gN8s1jXzZtAAfZuphbUfQzFzcaE2HBX8+TwMJaWTnGdnOKNMRggYi6ZIpI4w4KWvTcKn5Ve/pM4cBb7VnPOiiuHbxPmy6YkHoFX8hVp22X3vOH51fdXhM6TBqtO6Nd4J85gz2efLaZsWJLXURWvTUGsbRJuz++6lORc4QaDVTk+xQIDAQAB",
+  "background": {
+    "scripts": [
+      "assets/js/background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://calendar.google.com/calendar/*"
+      ],
+      "css": [
+        "assets/css/styles.css"
+      ],
+      "js": [
+        "assets/js/jquery.js",
+        "assets/js/showdown.min.js",
+        "assets/js/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "identity",
+    "tabs",
+    "https://www.googleapis.com/*",
+    "https://accounts.google.com/*"
+  ],
+  "oauth2": {
+    "client_id": "800330000065-4s9jkfceicmqgsgujet454t524qbct39.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.readonly"
+    ]
+  }
+}

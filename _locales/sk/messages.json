@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Calex pre Google Calendar™",
+    "description": "Názov rozšírenia."
+  },
+  "extShortName": {
+    "message": "Calex",
+    "description": "Krátky názov rozšírenia."
+  },
+  "extDesc": {
+    "message": "Zobrazuje popis udalostí v Google Calendar™.",
+    "description": "Popis rozšírenia."
+  }
+}

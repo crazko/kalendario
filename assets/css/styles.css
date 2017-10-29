@@ -1,0 +1,15 @@
+.calex__description {
+    max-width: 500px;
+}
+
+.calex__description h1:first-child {
+    margin-top: .5em;
+}
+
+.calex__description hr {
+    display: block !important;
+}
+
+.calex__description blockquote {
+    font-style: italic;
+}
