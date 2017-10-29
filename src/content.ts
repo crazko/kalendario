@@ -1,3 +1,5 @@
+import { logDebug } from './utils';
+
 const addDescription = (eventId: string, description: string) => {
   // let $event = $('#' + eventId);
   // Avoid duplicated content
@@ -10,10 +12,8 @@ const addDescription = (eventId: string, description: string) => {
 /**
  * Gets all events from calendar.
  */
-const getAllEvents = () => {
-  const rows = document.querySelectorAll('div[role="row"]');
-
-  return Array.from(rows)
+const getAllEvents = () =>
+  Array.from(document.querySelectorAll('div[role="row"]'))
     .filter(row => row.children[1] && row.children[1].children.length === 3)
     .map(event => {
       const eventElement = event.children[1].children[1]
@@ -29,39 +29,33 @@ const getAllEvents = () => {
         calendarName: calendarElement.dataset.text,
       };
     });
-};
-
-/* ----------------------------------------------------- */
-
-const calendarContainer = document.querySelector('header[role="banner"]');
 
 // Check for change in calendar.
 // Gather all events and send them to background to process
-const observer = new MutationObserver(function(mutations) {
+const observer = new MutationObserver(mutations => {
   if (document.querySelector('div[role="grid"]') !== null) {
     chrome.runtime.sendMessage(
       {
         msg: 'events',
         events: getAllEvents(),
       },
-      function(response) {
-        // console.log(response);
+      response => {
+        logDebug(response);
       },
     );
   }
 });
 
-observer.observe(calendarContainer, {
+observer.observe(document.querySelector('header[role="banner"]'), {
   childList: true,
   characterData: true,
   subtree: true,
 });
 
 // Wait for processed events and paste their data
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.msg === 'show') {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.msg === 'showEvent') {
     let event = request.event;
-    console.log(event.description);
     // addDescription(event.id, html);
   }
 });

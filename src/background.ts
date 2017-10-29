@@ -1,4 +1,5 @@
-const debug = true;
+import { logDebug } from './utils';
+
 const manifest = chrome.runtime.getManifest();
 const settings = {
   client_id: manifest.oauth2.client_id,
@@ -12,12 +13,6 @@ const apiUrl = {
   tokenInfo: 'https://www.googleapis.com/oauth2/v3/tokeninfo',
   calendar: 'https://www.googleapis.com/calendar/v3/calendars',
   calendarList: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
-};
-
-const logDebug = (...args: any[]) => {
-  if (debug && console && console.log) {
-    console.log.apply(console, args);
-  }
 };
 
 const getActualDate = () => new Date();
@@ -66,12 +61,12 @@ function validateTokens() {
   fetch(`${apiUrl.tokenInfo}?access_token=${localStorage['access_token']}`, {
     method: 'GET',
   })
-    .then(function(response) {
+    .then(response => {
       if (response.status != 200) {
         revokeTokens();
       }
     })
-    .catch(function(error) {
+    .catch(error => {
       logDebug(error);
     });
 }
@@ -88,14 +83,12 @@ function revokeTokens() {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
+    .then(response => response.json())
+    .then(data => {
       localStorage['access_token'] = data.access_token;
       localStorage['expiration'] = getExpirationDate(getActualDate(), 45);
     })
-    .catch(function(error) {
+    .catch(error => {
       logDebug(error);
     });
 }
@@ -113,15 +106,13 @@ function getTokens(code: any) {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
+    .then(response => response.json())
+    .then(data => {
       localStorage['access_token'] = data.access_token;
       localStorage['refresh_token'] = data.refresh_token;
       localStorage['expiration'] = getExpirationDate(getActualDate(), 45);
     })
-    .catch(function(error) {
+    .catch(error => {
       logDebug(error);
     });
 }
@@ -130,8 +121,6 @@ function getTokens(code: any) {
 
 /**
  * Fetches event's data from Google Calendar API.
- * @param {string} calendarId
- * @param {string} eventId
  * @returns {Promise.<Object>} event
  */
 function getEventData(calendarId: string, eventId: string) {
@@ -150,18 +139,14 @@ function getEventData(calendarId: string, eventId: string) {
       Authorization: `Bearer  ${localStorage['access_token']}`,
     },
   })
-    .then(function(response) {
-      return response.json();
-    })
-    .catch(function(error) {
+    .then(response => response.json())
+    .catch(error => {
       logDebug(error);
     });
 }
 
 /**
  * Sends event data back to calendar page.
- * @param {Object} event
- * @param {string} message to be added to request
  */
 function sendEvent(event: Object, message: string) {
   // Do not send event without description
@@ -208,10 +193,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       const calendar = calendars[events[i].calendarName];
 
       getEventData(calendar, events[i].id)
-        .then(function(event: any) {
-          sendEvent(event, 'show');
+        .then(event => {
+          sendEvent(event, 'showEvent');
         })
-        .catch(function(error: string) {
+        .catch(error => {
           logDebug(error);
         });
     }
@@ -232,16 +217,12 @@ const getCalendarList = () => {
       Authorization: 'Bearer  ' + localStorage['access_token'],
     },
   })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
-      return parseCalendarList(data.items);
-    })
-    .then(function(parsedData) {
+    .then(response => response.json())
+    .then(data => parseCalendarList(data.items))
+    .then(parsedData => {
       localStorage['calendars'] = JSON.stringify(parsedData);
     })
-    .catch(function(error) {
+    .catch(error => {
       logDebug(error);
     });
 };
