@@ -56,7 +56,8 @@ export const getEvent = (calendarId: string, eventId: string): Promise<{}> => {
 export const sendEventToContent = (event: Object, message: string) => {
   // Do not send event without description
   if (!event.hasOwnProperty('description')) {
-    return false;
+    return Promise.reject(`Event doesn't have description, .`);
+    // return false;
   }
 
   chrome.tabs.query(
