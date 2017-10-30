@@ -22,9 +22,12 @@ Tested in:
 
 ## Development
 
-- clone this repository `git clone git@github.com:crazko/calex-material.git`
-- install all dependencies `npm install`
-- build source files with `npm run dev`
+- clone this repository
+    - `git clone git@github.com:crazko/calex-material.git`
+- install all dependencies
+    - `npm install`
+- build source files with
+    - `npm run dev`
 - enable **Developer mode** in your browser
 - load **./dist** directory as an unpacked extension
 
