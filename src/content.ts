@@ -27,6 +27,6 @@ observer.observe(document.querySelector('div[role="main"]'), {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg === 'showEvent') {
     // addDescriptionToEvent(request.event.id, html);
-    console.log(request.event);
+    console.log(request.event.summary);
   }
 });

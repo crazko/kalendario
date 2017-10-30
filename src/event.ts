@@ -24,7 +24,6 @@ export const getAllEvents = (): IEvent[] =>
       );
     })
     .map(event => {
-      console.log(event);
       let eventElement;
       let calendarElement;
 

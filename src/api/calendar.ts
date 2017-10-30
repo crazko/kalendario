@@ -2,7 +2,7 @@ import { logDebug } from '../utils';
 import { apiUrl } from './authorization';
 
 export const getCalendarList = () => {
-  fetch(apiUrl.calendarList, {
+  return fetch(apiUrl.calendarList, {
     method: 'GET',
     headers: {
       Authorization: 'Bearer  ' + localStorage['access_token'],
@@ -16,12 +16,19 @@ export const getCalendarList = () => {
       }, {}),
     )
     .then(parsedData => {
-      localStorage['calendars'] = JSON.stringify(parsedData);
+      const data = JSON.stringify(parsedData);
+      localStorage['calendars'] = data;
+
+      return data;
     })
     .catch(error => {
       logDebug(error);
     });
 };
+
+export const getCalendars = () =>
+  (localStorage['calendars'] && JSON.parse(localStorage['calendars'])) ||
+  getCalendarList();
 
 /**
  * Fetches event's data from Google Calendar API.
@@ -30,14 +37,12 @@ export const getCalendarList = () => {
 export const getEvent = (calendarId: string, eventId: string) => {
   // Filter out default calendars, ie. Week number, Holidays
   if (!calendarId || calendarId.indexOf('#') > -1) {
-    throw new Error(
+    return Promise.reject(
       `Event '${eventId}' doesn't have proper calendar '${calendarId}'.`,
     );
   }
 
-  let params = `/${calendarId}/events/${eventId}`;
-
-  return fetch(apiUrl.calendar + params, {
+  return fetch(`${apiUrl.calendar}/${calendarId}/events/${eventId}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer  ${localStorage['access_token']}`,
