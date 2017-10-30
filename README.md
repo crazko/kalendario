@@ -22,10 +22,20 @@ Tested in:
 
 ## Development
 
-- clone this repository
-- checkout a new branch
-- load directory as an unpacked extension (be sure you have enabled **developer mode**)
-- you have to reload extension on every change you made
+- clone this repository `git clone git@github.com:crazko/calex-material.git`
+- install all dependencies `npm install`
+- build source files with `npm run dev`
+- enable **Developer mode** in your browser
+- load **./dist** directory as an unpacked extension
+
+**Note:** you have to reload extension on every change you made
+
+### Commands
+
+- `npm run dev` -
+- `npm run watch` -
+- `npm run prod` -
+- `./release.sh`
 
 ### Workflow:
 

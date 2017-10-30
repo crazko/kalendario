@@ -5,7 +5,7 @@ module.exports = env => {
   const isProductionRun = (env && env.production) || false;
 
   return {
-    devtool: isProductionRun ? 'source-map' : 'cheap-eval-source-map',
+    // devtool: isProductionRun ? 'source-map' : 'cheap-eval-source-map',
     entry: {
       background: './src/background.ts',
       content: './src/content.ts',
