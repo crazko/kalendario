@@ -1,6 +1,6 @@
-import { logDebug } from './utils';
+import { messages, logDebug } from './utils';
 import initialize, { revokeTokens } from './api/authorization';
-import { getEvent, sendEvent, getCalendars } from './api/calendar';
+import { getCalendars, getEvent, sendEventToContent } from './api/calendar';
 import { IEvent } from 'event';
 
 chrome.runtime.onInstalled.addListener(details => {
@@ -10,9 +10,9 @@ chrome.runtime.onInstalled.addListener(details => {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.msg === 'events') {
+  if (request.msg === messages.EVENTS) {
     if (
-      typeof localStorage['expiration'] === 'undefined' ||
+      typeof localStorage['expiration'] === undefined ||
       localStorage['expiration'] < new Date().getTime()
     ) {
       revokeTokens();
@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       getEvent(calendarId, event.id)
         .then(event => {
-          sendEvent(event, 'showEvent');
+          sendEventToContent(event, messages.SHOW_EVENT);
         })
         .catch(error => {
           logDebug(error);

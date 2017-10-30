@@ -1,8 +1,12 @@
 import { logDebug } from '../utils';
 import { apiUrl } from './authorization';
 
-export const getCalendarList = () => {
-  return fetch(apiUrl.calendarList, {
+interface ICalendars {
+  [name: string]: string;
+}
+
+export const getCalendarList = () =>
+  fetch(apiUrl.calendarList, {
     method: 'GET',
     headers: {
       Authorization: 'Bearer  ' + localStorage['access_token'],
@@ -24,17 +28,12 @@ export const getCalendarList = () => {
     .catch(error => {
       logDebug(error);
     });
-};
 
-export const getCalendars = () =>
+export const getCalendars = (): ICalendars =>
   (localStorage['calendars'] && JSON.parse(localStorage['calendars'])) ||
   getCalendarList();
 
-/**
- * Fetches event's data from Google Calendar API.
- * @returns {Promise.<Object>} event
- */
-export const getEvent = (calendarId: string, eventId: string) => {
+export const getEvent = (calendarId: string, eventId: string): Promise<{}> => {
   // Filter out default calendars, ie. Week number, Holidays
   if (!calendarId || calendarId.indexOf('#') > -1) {
     return Promise.reject(
@@ -54,10 +53,7 @@ export const getEvent = (calendarId: string, eventId: string) => {
     });
 };
 
-/**
- * Sends event data back to calendar page.
- */
-export const sendEvent = (event: Object, message: string) => {
+export const sendEventToContent = (event: Object, message: string) => {
   // Do not send event without description
   if (!event.hasOwnProperty('description')) {
     return false;

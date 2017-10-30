@@ -1,4 +1,4 @@
-import { logDebug } from './utils';
+import { messages, logDebug } from './utils';
 import { getAllEvents, addDescriptionToEvent } from './event';
 
 // Check for change in calendar.
@@ -7,7 +7,7 @@ const observer = new MutationObserver(mutations => {
   if (document.querySelector('div[role="grid"]') !== null) {
     chrome.runtime.sendMessage(
       {
-        msg: 'events',
+        msg: messages.EVENTS,
         events: getAllEvents(),
       },
       response => {
@@ -25,7 +25,7 @@ observer.observe(document.querySelector('div[role="main"]'), {
 
 // Wait for processed events and paste their data
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.msg === 'showEvent') {
+  if (request.msg === messages.SHOW_EVENT) {
     // addDescriptionToEvent(request.event.id, html);
     console.log(request.event.summary);
   }
