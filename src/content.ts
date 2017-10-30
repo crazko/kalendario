@@ -17,7 +17,7 @@ const observer = new MutationObserver(mutations => {
   }
 });
 
-observer.observe(document.querySelector('header[role="banner"]'), {
+observer.observe(document.querySelector('div[role="main"]'), {
   childList: true,
   characterData: true,
   subtree: true,
@@ -27,5 +27,6 @@ observer.observe(document.querySelector('header[role="banner"]'), {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg === 'showEvent') {
     // addDescriptionToEvent(request.event.id, html);
+    console.log(request.event);
   }
 });
