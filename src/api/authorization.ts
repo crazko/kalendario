@@ -22,7 +22,7 @@ const getExpirationDate = (dateFrom: Date, expireInMinutes: number): number => {
   return dateFrom.getTime();
 };
 
-const getTokens = (code: any) => {
+const getTokens = (code: string) => {
   let params = `?code=${code}`;
   params += `&client_id=${settings.client_id}`;
   params += `&client_secret=${settings.client_secret}`;
@@ -70,6 +70,7 @@ const initialize = () => {
         }
 
         code = code.replace(/[#]/g, '');
+
         getTokens(code);
       } else {
         logDebug(chrome.runtime.lastError);
@@ -113,5 +114,9 @@ export const revokeTokens = () => {
       logDebug(error);
     });
 };
+
+export const invalidTokens = () =>
+  typeof localStorage['expiration'] === undefined ||
+  localStorage['expiration'] < new Date().getTime();
 
 export default initialize;

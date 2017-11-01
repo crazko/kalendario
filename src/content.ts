@@ -4,7 +4,12 @@ import { getAllEvents, addDescriptionToEvent } from './event';
 // Check for change in calendar.
 // Gather all events and send them to background to process
 const observer = new MutationObserver(mutations => {
-  if (document.querySelector('div[role="grid"]') !== null) {
+  console.log('content', mutations);
+
+  if (
+    document.querySelector('div[role="grid"]') !== null &&
+    !document.querySelector('div[role="grid"] > div[role="presentation"]')
+  ) {
     chrome.runtime.sendMessage(
       {
         msg: messages.EVENTS,

@@ -20,10 +20,9 @@ export const getCalendarList = () =>
       }, {}),
     )
     .then(parsedData => {
-      const data = JSON.stringify(parsedData);
-      localStorage['calendars'] = data;
+      localStorage['calendars'] = JSON.stringify(parsedData);
 
-      return data;
+      return localStorage['calendars'];
     })
     .catch(error => {
       logDebug(error);
