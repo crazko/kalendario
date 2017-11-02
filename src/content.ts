@@ -4,8 +4,6 @@ import { getAllEvents, addDescriptionToEvent } from './event';
 // Check for change in calendar.
 // Gather all events and send them to background to process
 const observer = new MutationObserver(mutations => {
-  console.log('content', mutations);
-
   if (
     document.querySelector('div[role="grid"]') !== null &&
     !document.querySelector('div[role="grid"] > div[role="presentation"]')
@@ -22,7 +20,7 @@ const observer = new MutationObserver(mutations => {
   }
 });
 
-observer.observe(document.querySelector('div[role="main"]'), {
+observer.observe(document.querySelector('div[role="main"]').parentElement, {
   childList: true,
   characterData: true,
   subtree: true,
