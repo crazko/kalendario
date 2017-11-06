@@ -10,6 +10,7 @@ export const getAllEvents = (): IEvent[] =>
   Array.from(document.querySelectorAll('div[role="main"] div[role="row"]'))
     .filter(row => {
       return (
+        !row.getAttribute('id') &&
         row.children &&
         ((row.children.length === 1 &&
           row.children[0].children &&
@@ -43,7 +44,8 @@ export const getAllEvents = (): IEvent[] =>
       const data = dataAttrEventId.split(' ');
       const eventId = data[0];
 
-      eventElement.id = eventId;
+      event.id = eventId;
+      event.className += ' calex__event';
 
       return {
         id: eventId,
@@ -52,9 +54,10 @@ export const getAllEvents = (): IEvent[] =>
     });
 
 export const addDescriptionToEvent = (eventId: string, description: string) => {
-  const event = document.getElementById(eventId);
   const descriptionElement = document.createElement('div');
+  descriptionElement.insertAdjacentHTML('afterbegin', description);
+  descriptionElement.className = 'calex__description';
 
-  descriptionElement.textContent = description;
+  const event = document.getElementById(eventId);
   event.appendChild(descriptionElement);
 };

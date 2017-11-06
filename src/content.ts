@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener(
   (request: IEventMessage, sender, sendResponse) => {
     switch (request.msg) {
       case messages.SHOW_EVENT:
-        // addDescriptionToEvent(request.event.id, request.event.summary);
+        addDescriptionToEvent(request.event.id, request.event.description);
         break;
     }
   },
