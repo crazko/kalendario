@@ -26,10 +26,21 @@ observer.observe(document.querySelector('div[role="main"]').parentElement, {
   subtree: true,
 });
 
+interface IMessage {
+  msg: string;
+}
+
+interface IEventMessage extends IMessage {
+  event: gapi.client.calendar.Event;
+}
+
 // Wait for processed events and paste their data
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.msg === messages.SHOW_EVENT) {
-    // addDescriptionToEvent(request.event.id, html);
-    console.log(request.event.summary);
-  }
-});
+chrome.runtime.onMessage.addListener(
+  (request: IEventMessage, sender, sendResponse) => {
+    switch (request.msg) {
+      case messages.SHOW_EVENT:
+        // addDescriptionToEvent(request.event.id, request.event.summary);
+        break;
+    }
+  },
+);

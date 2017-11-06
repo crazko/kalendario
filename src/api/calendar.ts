@@ -32,7 +32,10 @@ export const getCalendars = (): ICalendars =>
   (localStorage['calendars'] && JSON.parse(localStorage['calendars'])) ||
   getCalendarList();
 
-export const getEvent = (calendarId: string, eventId: string): Promise<{}> => {
+export const getEvent = (
+  calendarId: string,
+  eventId: string,
+): Promise<gapi.client.calendar.Event> => {
   // Filter out default calendars, ie. Week number, Holidays
   if (!calendarId || calendarId.indexOf('#') > -1) {
     return Promise.reject(
@@ -52,7 +55,10 @@ export const getEvent = (calendarId: string, eventId: string): Promise<{}> => {
     });
 };
 
-export const sendEventToContent = (event: Object, message: string) => {
+export const sendEventToContent = (
+  event: gapi.client.calendar.Event,
+  message: string,
+) => {
   // Do not send event without description
   if (!event.hasOwnProperty('description')) {
     return Promise.reject(`Event doesn't have description, .`);

@@ -52,10 +52,9 @@ export const getAllEvents = (): IEvent[] =>
     });
 
 export const addDescriptionToEvent = (eventId: string, description: string) => {
-  // let $event = $('#' + eventId);
-  // Avoid duplicated content
-  //   if ($event.find('.calex__description')) {
-  // $event.find('.calex__description').remove();
-  //   }
-  //   $event.append(`<div class="calex__description">${description}</div>`);
+  const event = document.getElementById(eventId);
+  const descriptionElement = document.createElement('div');
+
+  descriptionElement.textContent = description;
+  event.appendChild(descriptionElement);
 };
