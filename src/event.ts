@@ -24,19 +24,19 @@ export const getAllEvents = (): IEvent[] =>
             row.children[1].children[1].children.length === 2))
       );
     })
-    .map(event => {
+    .map(row => {
       let eventElement;
       let calendarElement;
 
-      if (event.children.length === 1) {
-        eventElement = event.children[0].children[1].children[0] as HTMLElement;
-        calendarElement = event.children[0].children[2]
+      if (row.children.length === 1) {
+        eventElement = row.children[0].children[1].children[0] as HTMLElement;
+        calendarElement = row.children[0].children[2]
           .children[0] as HTMLElement;
       }
 
-      if (event.children.length === 2) {
-        eventElement = event.children[1].children[1].children[0] as HTMLElement;
-        calendarElement = event.children[1].children[2]
+      if (row.children.length === 2) {
+        eventElement = row.children[1].children[1].children[0] as HTMLElement;
+        calendarElement = row.children[1].children[2]
           .children[0] as HTMLElement;
       }
 
@@ -44,8 +44,8 @@ export const getAllEvents = (): IEvent[] =>
       const data = dataAttrEventId.split(' ');
       const eventId = data[0];
 
-      event.id = eventId;
-      event.className += ' calex__event';
+      row.id = eventId;
+      row.className += ' calex__event';
 
       return {
         id: eventId,

@@ -29,6 +29,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             logDebug(error);
           });
       });
+
       break;
   }
 });
