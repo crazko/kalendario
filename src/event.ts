@@ -6,52 +6,66 @@ export interface IEvent {
 /**
  * Gets all events from calendar.
  */
-export const getAllEvents = (): IEvent[] =>
-  Array.from(document.querySelectorAll('div[role="main"] div[role="row"]'))
-    .filter(row => {
-      return (
-        !row.getAttribute('id') &&
-        row.children &&
-        ((row.children.length === 1 &&
-          row.children[0].children &&
-          row.children[0].children.length === 3 &&
-          row.children[0].children[1].children &&
-          row.children[0].children[1].children.length === 2) ||
-          (row.children.length === 2 &&
-            row.children[1].children &&
-            row.children[1].children.length === 3 &&
-            row.children[1].children[1].children &&
-            row.children[1].children[1].children.length === 2))
-      );
-    })
-    .map(row => {
-      let eventElement;
-      let calendarElement;
+export const getAllEvents = (): IEvent[] => {
+  const container = document.getElementById('YPCqFe'); // main parent
+  const rowNodes = document.getElementsByClassName('taTyDe'); // row
+  const rows = [];
+  const events: IEvent[] = [];
 
-      if (row.children.length === 1) {
-        eventElement = row.children[0].children[1].children[0] as HTMLElement;
-        calendarElement = row.children[0].children[2]
-          .children[0] as HTMLElement;
-      }
+  // Fitler out correct rows
+  for (let i = 0; i < rowNodes.length; i++) {
+    const row = rowNodes[i];
 
-      if (row.children.length === 2) {
-        eventElement = row.children[1].children[1].children[0] as HTMLElement;
-        calendarElement = row.children[1].children[2]
-          .children[0] as HTMLElement;
-      }
+    if (
+      !row.getAttribute('id') &&
+      row.children &&
+      ((row.children.length === 1 &&
+        row.children[0].children &&
+        row.children[0].children.length === 3 &&
+        row.children[0].children[1].children &&
+        row.children[0].children[1].children.length === 2) ||
+        (row.children.length === 2 &&
+          row.children[1].children &&
+          row.children[1].children.length === 3 &&
+          row.children[1].children[1].children &&
+          row.children[1].children[1].children.length === 2))
+    ) {
+      rows.push(row);
+    }
+  }
 
-      const dataAttrEventId = atob(eventElement.dataset.eventid);
-      const data = dataAttrEventId.split(' ');
-      const eventId = data[0];
+  // Create Event objects
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
 
-      row.id = eventId;
-      row.className += ' calex__event';
+    let eventElement;
+    let calendarElement;
 
-      return {
-        id: eventId,
-        calendarName: calendarElement.dataset.text,
-      };
+    if (row.children.length === 1) {
+      eventElement = row.children[0].children[1].children[0] as HTMLElement;
+      calendarElement = row.children[0].children[2].children[0] as HTMLElement;
+    }
+
+    if (row.children.length === 2) {
+      eventElement = row.children[1].children[1].children[0] as HTMLElement;
+      calendarElement = row.children[1].children[2].children[0] as HTMLElement;
+    }
+
+    const dataAttrEventId = atob(eventElement.dataset.eventid);
+    const data = dataAttrEventId.split(' ');
+    const eventId = data[0];
+
+    row.id = eventId;
+    row.className += ' calex__event';
+
+    events.push({
+      id: eventId,
+      calendarName: calendarElement.dataset.text,
     });
+  }
+
+  return events;
+};
 
 export const addDescriptionToEvent = (eventId: string, description: string) => {
   const classNameDescription = 'calex__description';
@@ -65,7 +79,7 @@ export const addDescriptionToEvent = (eventId: string, description: string) => {
   const addedDescriptions = event.getElementsByClassName(classNameDescription);
   Array.from(addedDescriptions).forEach(element => {
     event.removeChild(element);
-  })
+  });
 
   contentElement.className = 'calex__description--content';
   contentElement.insertAdjacentHTML('afterbegin', description);

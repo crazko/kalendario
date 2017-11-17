@@ -4,22 +4,17 @@ import { getAllEvents, addDescriptionToEvent } from './event';
 // Check for change in calendar.
 // Gather all events and send them to background to process
 const observer = new MutationObserver(mutations => {
-  if (
-    document.querySelector('div[role="grid"]') !== null &&
-    !document.querySelector('div[role="grid"] > div[role="presentation"]')
-  ) {
-    const events = getAllEvents();
+  const events = getAllEvents();
 
-    chrome.runtime.sendMessage(
-      {
-        msg: messages.EVENTS,
-        events,
-      },
-      // response => {
-      //   logDebug(response);
-      // },
-    );
-  }
+  chrome.runtime.sendMessage(
+    {
+      msg: messages.EVENTS,
+      events,
+    },
+    // response => {
+    //   logDebug(response);
+    // },
+  );
 });
 
 observer.observe(document.querySelector('div[role="main"]').parentElement, {
@@ -37,12 +32,10 @@ interface IEventMessage extends IMessage {
 }
 
 // Wait for processed events and paste their data
-chrome.runtime.onMessage.addListener(
-  (request: IEventMessage, sender, sendResponse) => {
-    switch (request.msg) {
-      case messages.SHOW_EVENT:
-        addDescriptionToEvent(request.event.id, request.event.description);
-        break;
-    }
-  },
-);
+chrome.runtime.onMessage.addListener((request: IEventMessage, sender, sendResponse) => {
+  switch (request.msg) {
+    case messages.SHOW_EVENT:
+      addDescriptionToEvent(request.event.id, request.event.description);
+      break;
+  }
+});
