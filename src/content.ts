@@ -8,14 +8,16 @@ const observer = new MutationObserver(mutations => {
     document.querySelector('div[role="grid"]') !== null &&
     !document.querySelector('div[role="grid"] > div[role="presentation"]')
   ) {
+    const events = getAllEvents();
+
     chrome.runtime.sendMessage(
       {
         msg: messages.EVENTS,
-        events: getAllEvents(),
+        events,
       },
-      response => {
-        logDebug(response);
-      },
+      // response => {
+      //   logDebug(response);
+      // },
     );
   }
 });

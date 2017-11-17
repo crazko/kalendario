@@ -54,10 +54,25 @@ export const getAllEvents = (): IEvent[] =>
     });
 
 export const addDescriptionToEvent = (eventId: string, description: string) => {
-  const descriptionElement = document.createElement('div');
-  descriptionElement.insertAdjacentHTML('afterbegin', description);
-  descriptionElement.className = 'calex__description';
+  const classNameDescription = 'calex__description';
+  const classNameHasDescription = 'calex__event--has-description';
 
+  const contentElement = document.createElement('div');
+  const descriptionElement = document.createElement('div');
   const event = document.getElementById(eventId);
+
+  // Remove all previously added nodes
+  const addedDescriptions = event.getElementsByClassName(classNameDescription);
+  Array.from(addedDescriptions).forEach(element => {
+    event.removeChild(element);
+  })
+
+  contentElement.className = 'calex__description--content';
+  contentElement.insertAdjacentHTML('afterbegin', description);
+
+  descriptionElement.className = classNameDescription;
+  descriptionElement.appendChild(contentElement);
+
   event.appendChild(descriptionElement);
+  event.className += ' ' + classNameHasDescription;
 };
