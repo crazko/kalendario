@@ -1,5 +1,9 @@
 import { messages, logDebug } from './utils';
-import { getAllEvents, addDescriptionToEvent } from './event';
+import {
+  getAllEvents,
+  addDescriptionToEvent,
+  IGapiEventMessage,
+} from './event';
 
 // Check for change in calendar.
 // Gather all events and send them to background to process
@@ -8,8 +12,10 @@ const observer = new MutationObserver(mutations => {
 
   chrome.runtime.sendMessage(
     {
-      msg: messages.EVENTS,
-      events,
+      msg: messages.FETCH_EVENTS,
+      data: {
+        events,
+      },
     },
     // response => {
     //   logDebug(response);
@@ -23,19 +29,13 @@ observer.observe(document.querySelector('div[role="main"]').parentElement, {
   subtree: true,
 });
 
-interface IMessage {
-  msg: string;
-}
-
-interface IEventMessage extends IMessage {
-  event: gapi.client.calendar.Event;
-}
-
 // Wait for processed events and paste their data
-chrome.runtime.onMessage.addListener((request: IEventMessage, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.msg) {
     case messages.SHOW_EVENT:
-      addDescriptionToEvent(request.event.id, request.event.description);
+      const req = request as IGapiEventMessage;
+
+      addDescriptionToEvent(req.data.event.id, req.data.event.description);
       break;
   }
 });

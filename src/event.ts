@@ -1,7 +1,20 @@
+import { IMessage } from './utils';
+
 export interface IEvent {
   id: string;
   calendarName: string;
 }
+
+interface IEvents {
+  events: IEvent[];
+}
+
+interface IGapiEvent {
+  event: gapi.client.calendar.Event;
+}
+
+export type IGapiEventMessage = IMessage<IGapiEvent>;
+export type IEventsMessage = IMessage<IEvents>;
 
 /**
  * Gets all events from calendar.

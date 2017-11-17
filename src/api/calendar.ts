@@ -62,7 +62,6 @@ export const sendEventToContent = (
   // Do not send event without description
   if (!event.hasOwnProperty('description')) {
     return Promise.reject(`Event doesn't have description, .`);
-    // return false;
   }
 
   chrome.tabs.query(
@@ -73,7 +72,9 @@ export const sendEventToContent = (
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {
           msg: message,
-          event: event,
+          data: {
+            event,
+          },
         });
       });
     },

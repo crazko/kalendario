@@ -2,6 +2,7 @@
   "private": true,
   "prettier": {
     "singleQuote": true,
+    "printWidth": 80,
     "trailingComma": "all"
   },
   "scripts": {

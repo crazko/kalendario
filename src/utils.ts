@@ -1,7 +1,12 @@
+export interface IMessage<T> {
+  msg: string;
+  data: T;
+}
+
 const debug = true;
 
 export const messages = {
-  EVENTS: 'events',
+  FETCH_EVENTS: 'fetchEvents',
   SHOW_EVENT: 'showEvent',
 };
 
