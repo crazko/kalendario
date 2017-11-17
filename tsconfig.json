@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "downlevelIteration": true,
+    "module": "commonjs",
     "noImplicitAny": true,
     "removeComments": true,
     "target": "es6"

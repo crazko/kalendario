@@ -32,10 +32,7 @@ export const getCalendars = (): ICalendars =>
   (localStorage['calendars'] && JSON.parse(localStorage['calendars'])) ||
   getCalendarList();
 
-export const getEvent = (
-  calendarId: string,
-  eventId: string,
-): Promise<gapi.client.calendar.Event> => {
+export const getEvent = (calendarId: string, eventId: string) => {
   // Filter out default calendars, ie. Week number, Holidays
   if (!calendarId || calendarId.indexOf('#') > -1) {
     return Promise.reject(

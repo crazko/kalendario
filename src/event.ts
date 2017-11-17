@@ -90,7 +90,8 @@ export const addDescriptionToEvent = (eventId: string, description: string) => {
 
   // Remove all previously added nodes
   const addedDescriptions = event.getElementsByClassName(classNameDescription);
-  Array.from(addedDescriptions).forEach(element => {
+
+  [...addedDescriptions].forEach((element: Element) => {
     event.removeChild(element);
   });
 

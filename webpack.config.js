@@ -1,5 +1,5 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = env => {
   const isProductionRun = (env && env.production) || false;
@@ -12,18 +12,25 @@ module.exports = env => {
     },
     output: {
       filename: '[name].js',
-      path: path.resolve(__dirname, 'dist')
+      path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
-      extensions: ['.ts']
+      extensions: ['.ts'],
     },
     module: {
       loaders: [
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader'
-        }
-      ]
-    }
-  }
+          loader: 'tslint-loader',
+          options: {
+            configFile: 'tslint.json',
+          },
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'ts-loader',
+        },
+      ],
+    },
+  };
 };
