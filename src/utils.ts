@@ -5,10 +5,10 @@ export interface IMessage<T> {
 
 const debug = true;
 
-export const messages = {
-  FETCH_EVENTS: 'fetchEvents',
-  SHOW_EVENT: 'showEvent',
-};
+export enum messages {
+  FETCH_EVENTS = 'FETCH_EVENTS',
+  SHOW_EVENT = 'SHOW_EVENT',
+}
 
 export const logDebug = (...args: any[]) => {
   if (debug && console && console.log) {
