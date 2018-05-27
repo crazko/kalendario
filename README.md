@@ -33,3 +33,7 @@ Tested in:
 - `npm run watch`
 - `npm run prod`
 - `./release.sh`
+
+---
+
+This is a new version of [previous one](https://github.com/crazko/calex-classic) developed for classic Google Calenda not available anymore.
