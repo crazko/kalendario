@@ -1,7 +1,7 @@
 import { messages, logDebug } from './utils';
 import initialize, { revokeTokens, invalidTokens } from './api/authorization';
 import { getCalendars, getEvent, sendEventToContent } from './api/calendar';
-import { IEvent, IEventsMessage } from './event';
+import { IEvent, EventsMessage } from './event';
 
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install') {
@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (invalidTokens()) {
         revokeTokens();
       }
-      const req = request as IEventsMessage;
+      const req = request as EventsMessage;
       const calendars = getCalendars();
 
       req.data.events.forEach(event => {

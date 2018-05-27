@@ -1,5 +1,7 @@
 import { IMessage } from './utils';
 
+const EVENT_ROW_CLASS = 'taTyDe';
+
 export interface IEvent {
   id: string;
   calendarName: string;
@@ -13,10 +15,11 @@ interface IGapiEvent {
   event: gapi.client.calendar.Event;
 }
 
-export type IGapiEventMessage = IMessage<IGapiEvent>;
-export type IEventsMessage = IMessage<IEvents>;
+export type GapiEventMessage = IMessage<IGapiEvent>;
+export type EventsMessage = IMessage<IEvents>;
 
 const getEventId = (element: HTMLElement) => {
+  // Reminders have different eventid which cause an error with atop()
   const dataAttrEventId = atob(element.dataset.eventid);
   const [eventId, account] = dataAttrEventId.split(' ');
 
@@ -29,13 +32,12 @@ const getEventCalendarName = (element: HTMLElement) => element.dataset.text;
  * Gets all events from calendar.
  */
 export const getAllEvents = (): IEvent[] => {
-  const rowNodes = document.getElementsByClassName('taTyDe'); // row
-  const events: IEvent[] = [];
+  const rowNodes = document.getElementsByClassName(EVENT_ROW_CLASS);
 
   // Get only correct rows
   const rowNodesReducer = (rows: Element[], row: Element) => {
     if (
-      !row.getAttribute('id') &&
+      !row.classList.contains('calex__event') &&
       row.children &&
       (row.children.length === 2 &&
         row.children[1].children &&
@@ -64,8 +66,9 @@ export const getAllEvents = (): IEvent[] => {
 
     const calendarName = getEventCalendarName(calendarElement);
 
+    // Mark rows so they are easily accessible when adding description
     row.id = eventId;
-    row.className += ' calex__event';
+    row.classList.add('calex__event');
 
     events.push({
       id: eventId,
