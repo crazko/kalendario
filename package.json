@@ -11,17 +11,17 @@
     "prod": "webpack -p --env.production"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.51",
-    "@types/es6-promise": "0.0.33",
+    "@types/chrome": "0.0.68",
+    "@types/es6-promise": "3.3.0",
     "@types/gapi.client.calendar": "^3.0.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
-    "prettier": "1.7.4",
-    "ts-loader": "^3.1.0",
+    "prettier": "1.13.4",
+    "ts-loader": "^4.3.0",
     "tslint": "^5.8.0",
     "tslint-loader": "^3.5.3",
     "typescript": "^2.5.3",
-    "webpack": "^3.8.1"
+    "webpack": "^4.10.2"
   }
 }
