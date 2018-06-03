@@ -18,7 +18,7 @@ module.exports = env => {
       extensions: ['.ts'],
     },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.tsx?$/,
           loader: 'tslint-loader',

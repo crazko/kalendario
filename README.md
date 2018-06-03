@@ -29,9 +29,9 @@ Tested in:
 
 ### Available commands
 
+- `npm start`
 - `npm run dev`
-- `npm run watch`
-- `npm run prod`
+- `npm run build`
 - `./release.sh`
 
 ---

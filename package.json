@@ -6,9 +6,9 @@
     "trailingComma": "all"
   },
   "scripts": {
-    "dev": "webpack",
-    "watch": "webpack -w",
-    "prod": "webpack -p --env.production"
+    "start": "webpack -w --mode=development",
+    "dev": "webpack --mode=development",
+    "build": "webpack --mode=production"
   },
   "devDependencies": {
     "@types/chrome": "0.0.51",
@@ -18,10 +18,11 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.7.0",
     "prettier": "1.7.4",
-    "ts-loader": "^3.1.0",
-    "tslint": "^5.8.0",
-    "tslint-loader": "^3.5.3",
+    "ts-loader": "^4.3.1",
+    "tslint": "^5.10.0",
+    "tslint-loader": "^3.6.0",
     "typescript": "^2.5.3",
-    "webpack": "^3.8.1"
+    "webpack": "^4.10.2",
+    "webpack-cli": "^3.0.1"
   }
 }
