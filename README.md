@@ -39,4 +39,4 @@ Tested in:
 
 ---
 
-This is a new version of [previous one](https://github.com/crazko/calex-classic) developed for classic Google Calenda not available anymore.
+This is a new version of previous one [developed for classic Google Calendar](https://github.com/crazko/calex-classic), that is not available anymore.
