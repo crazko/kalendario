@@ -1,4 +1,7 @@
 # Calex
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/crazko/calex.svg)](https://greenkeeper.io/)
+
 A browser extension that shows events' descriptions in Google Calendar.
 
 Descriptions are displayed in:
