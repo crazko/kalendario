@@ -1,5 +1,7 @@
 const path = require('path');
-const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 
 module.exports = env => {
   const isProductionRun = (env && env.production) || false;
@@ -10,6 +12,23 @@ module.exports = env => {
       background: './src/background.ts',
       content: './src/content.ts',
     },
+    plugins: [
+      new CleanWebpackPlugin(['dist']),
+      new CopyWebpackPlugin([
+        {
+          from: 'src/_locales',
+          to: '_locales',
+        },
+        {
+          from: 'src/icons',
+          to: 'icons',
+        },
+        {
+          from: 'src/manifest.json',
+        },
+      ]),
+      new ChromeExtensionReloader(),
+    ],
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),

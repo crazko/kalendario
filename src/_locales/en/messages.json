@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Calex for Google Calendar™",
+    "description": "Extension name."
+  },
+  "extShortName": {
+    "message": "Calex",
+    "description": "Extension short name."
+  },
+  "extDesc": {
+    "message": "Shows events' descriptions in Google Calendar™.",
+    "description": "Extension description."
+  }
+}
