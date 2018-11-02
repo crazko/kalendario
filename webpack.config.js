@@ -3,11 +3,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 
-module.exports = env => {
-  const isProductionRun = (env && env.production) || false;
+module.exports = (env, argv) => {
+  const isProductionRun = argv.mode === 'production';
 
   return {
-    // devtool: isProductionRun ? 'source-map' : 'cheap-eval-source-map',
+    devtool: isProductionRun ? 'source-map' : 'cheap-eval-source-map',
     entry: {
       background: './src/background.ts',
       content: './src/content.ts',
@@ -27,8 +27,8 @@ module.exports = env => {
           from: 'src/manifest.json',
         },
       ]),
-      new ChromeExtensionReloader(),
-    ],
+      argv.watch ? new ChromeExtensionReloader() : null,
+    ].filter(plugin => !!plugin),
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
