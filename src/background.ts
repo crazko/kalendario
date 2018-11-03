@@ -1,7 +1,7 @@
 import { messages, logDebug } from './utils';
 import initialize, { revokeTokens, invalidTokens } from './api/authorization';
 import { getCalendars, getEvent, sendEventToContent } from './api/calendar';
-import { IEvent, EventsMessage } from './event';
+import { EventsMessage } from './event';
 
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install') {

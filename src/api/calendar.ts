@@ -5,11 +5,11 @@ interface ICalendars {
   [name: string]: string;
 }
 
-export const getCalendarList = () =>
+const getCalendarList = () =>
   fetch(apiUrl.calendarList, {
     method: 'GET',
     headers: {
-      Authorization: 'Bearer  ' + localStorage['access_token'],
+      Authorization: `Bearer  ${localStorage['access_token']}`,
     },
   })
     .then(response => response.json())

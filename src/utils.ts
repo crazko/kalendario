@@ -1,8 +1,3 @@
-export interface IMessage<T> {
-  msg: string;
-  data: T;
-}
-
 const debug = true;
 
 export enum messages {

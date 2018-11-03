@@ -4,13 +4,11 @@ import { getAllEvents, addDescriptionToEvent, GapiEventMessage } from './event';
 // Check for change in calendar.
 // Gather all events and send them to background to process
 const observer = new MutationObserver(mutations => {
-  const events = getAllEvents();
-
   chrome.runtime.sendMessage(
     {
       msg: messages.FETCH_EVENTS,
       data: {
-        events,
+        events: getAllEvents(),
       },
     },
     response => {

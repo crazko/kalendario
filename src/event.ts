@@ -1,8 +1,11 @@
-import { IMessage } from './utils';
-
 const EVENT_ROW_CLASS = 'taTyDe';
 
-export interface IEvent {
+interface IMessage<T> {
+  msg: string;
+  data: T;
+}
+
+interface IEvent {
   id: string;
   calendarName: string;
 }
