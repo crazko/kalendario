@@ -22,9 +22,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const calendarId = calendars[event.calendarName];
 
         getEvent(calendarId, event.id)
-          .then(event => {
-            sendEventToContent(event, messages.SHOW_EVENT);
-          })
+          .then(event => sendEventToContent(event, messages.SHOW_EVENT))
           .catch(error => {
             logDebug(error);
           });

@@ -13,9 +13,9 @@ const observer = new MutationObserver(mutations => {
         events,
       },
     },
-    // response => {
-    //   logDebug(response);
-    // },
+    response => {
+      logDebug(response);
+    },
   );
 });
 

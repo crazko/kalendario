@@ -12,7 +12,7 @@ export enum messages {
 
 export const logDebug = (...args: any[]) => {
   if (debug && console && console.log) {
-    args.unshift('calex');
+    args.unshift('[calex]');
     console.log.apply(console, args);
   }
 };

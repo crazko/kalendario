@@ -58,7 +58,9 @@ export const sendEventToContent = (
 ) => {
   // Do not send event without description
   if (!event.hasOwnProperty('description')) {
-    return Promise.reject(`Event doesn't have description, .`);
+    return Promise.reject(
+      `Event "${event.summary}" doesn't have a description.`,
+    );
   }
 
   chrome.tabs.query(
