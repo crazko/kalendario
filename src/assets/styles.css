@@ -11,6 +11,7 @@
 
 .calex__description--content {
     padding: 2em;
+    white-space: pre-wrap;
     word-wrap: break-word;
 }
 
