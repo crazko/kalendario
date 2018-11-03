@@ -18,8 +18,8 @@
   "content_scripts": [
     {
       "matches": ["https://calendar.google.com/*"],
-      "css": ["assets/css/styles.css"],
-      "js": ["assets/js/jquery.js", "content.js"],
+      "css": ["styles.css"],
+      "js": ["content.js"],
       "run_at": "document_idle"
     }
   ],
@@ -32,6 +32,5 @@
   "oauth2": {
     "client_id": "800330000065-4s9jkfceicmqgsgujet454t524qbct39.apps.googleusercontent.com",
     "scopes": ["https://www.googleapis.com/auth/calendar.readonly"]
-  },
-  "sandbox": ["background.js", "content.js"]
+  }
 }

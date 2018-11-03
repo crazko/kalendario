@@ -1,4 +1,11 @@
 {
+  "name": "calex",
+  "author": {
+    "name": "Roman Vesely",
+    "url": "https://romanvesely.com",
+    "email": "info@romanvesely.com"
+  },
+  "homepage": "https://github.com/crazko/calex",
   "private": true,
   "prettier": {
     "singleQuote": true,
@@ -27,5 +34,6 @@
     "webpack": "^4.23.1",
     "webpack-chrome-extension-reloader": "^0.8.3",
     "webpack-cli": "^3.1.2"
-  }
+  },
+  "dependencies": {}
 }

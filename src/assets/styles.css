@@ -1,0 +1,13 @@
+.calex__event {
+    flex-wrap: wrap;
+}
+
+.calex__description {
+    background-color: #fafafa;
+    flex-basis: 100%;
+    padding: 2em 0 2em 300px;
+}
+
+.calex__description--content {
+    max-width: 550px;
+}

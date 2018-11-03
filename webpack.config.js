@@ -7,34 +7,14 @@ module.exports = (env, argv) => {
   const isProductionRun = argv.mode === 'production';
 
   return {
-    devtool: isProductionRun ? 'source-map' : 'cheap-eval-source-map',
+    devtool: isProductionRun ? 'source-map' : 'cheap-source-map',
     entry: {
       background: './src/background.ts',
       content: './src/content.ts',
     },
-    plugins: [
-      new CleanWebpackPlugin(['dist']),
-      new CopyWebpackPlugin([
-        {
-          from: 'src/_locales',
-          to: '_locales',
-        },
-        {
-          from: 'src/icons',
-          to: 'icons',
-        },
-        {
-          from: 'src/manifest.json',
-        },
-      ]),
-      argv.watch ? new ChromeExtensionReloader() : null,
-    ].filter(plugin => !!plugin),
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
-    },
-    resolve: {
-      extensions: ['.ts'],
     },
     module: {
       rules: [
@@ -51,5 +31,28 @@ module.exports = (env, argv) => {
         },
       ],
     },
+    resolve: {
+      extensions: ['.ts'],
+    },
+    plugins: [
+      new CleanWebpackPlugin(['dist']),
+      new CopyWebpackPlugin([
+        {
+          from: 'src/assets/_locales',
+          to: '_locales',
+        },
+        {
+          from: 'src/assets/icons',
+          to: 'icons',
+        },
+        {
+          from: 'src/assets/styles.css',
+        },
+        {
+          from: 'src/manifest.json',
+        },
+      ]),
+      argv.watch ? new ChromeExtensionReloader() : null,
+    ].filter(plugin => !!plugin),
   };
 };
