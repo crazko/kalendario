@@ -107,5 +107,5 @@ export const addDescriptionToEvent = (eventId: string, description: string) => {
   descriptionElement.appendChild(contentElement);
 
   event.appendChild(descriptionElement);
-  event.className += ' ' + classNameHasDescription;
+  event.classList.add(classNameHasDescription);
 };

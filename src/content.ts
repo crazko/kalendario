@@ -12,7 +12,7 @@ const observer = new MutationObserver(mutations => {
       },
     },
     response => {
-      logDebug(response);
+      logDebug(`Events recieved.`);
     },
   );
 });

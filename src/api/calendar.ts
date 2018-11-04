@@ -78,4 +78,6 @@ export const sendEventToContent = (
       });
     },
   );
+
+  return Promise.resolve(`Sending event "${event.summary}".`);
 };

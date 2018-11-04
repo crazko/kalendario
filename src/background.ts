@@ -17,12 +17,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
       const req = request as EventsMessage;
       const calendars = getCalendars();
+      const summaries = [] as string[];
 
       req.data.events.forEach(event => {
         const calendarId = calendars[event.calendarName];
 
         getEvent(calendarId, event.id)
           .then(event => sendEventToContent(event, messages.SHOW_EVENT))
+          .then(summary => {
+            logDebug(summary);
+          })
           .catch(error => {
             logDebug(error);
           });
