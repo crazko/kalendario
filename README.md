@@ -5,38 +5,34 @@
 A browser extension that shows events' descriptions in Google Calendar.
 
 Descriptions are displayed in:
-- the agenda view
-- the search results
+
+-   the agenda view
+-   the search results
 
 ![Calex in Google Calendar](docs/screenshot.png)
 
 ## Installation
+
 Install from [Chrome Web Store](https://chrome.google.com/webstore/detail/calex-for-google-calendar/ccoehijdbponhcemihobmdpaeenmgchg).
 
 ### Browsers
+
 Tested in:
 
-- [Chrome](https://www.google.com/chrome/)
-- [Opera](https://www.opera.com/) (you can use Chrome extensions trough [Download Chrome Extensions](https://addons.opera.com/en/extensions/details/download-chrome-extension-9/) addon)
-- [Vivaldi](https://vivaldi.com/)
+-   [Chrome](https://www.google.com/chrome/)
+-   [Opera](https://www.opera.com/) (you can use Chrome extensions trough [Download Chrome Extensions](https://addons.opera.com/en/extensions/details/download-chrome-extension-9/) addon)
+-   [Vivaldi](https://vivaldi.com/)
 
 ## Development
 
-- clone this repository `git clone git@github.com:crazko/calex.git`
-- install all dependencies `npm install`
-- build source files with `npm run dev`
-- enable **Developer mode** in your browser
-- load **./dist** directory as an unpacked extension
-
-**Note:** you have to reload extension on every change you made
+-   clone this repository `git clone git@github.com:crazko/calex.git`
+-   install all dependencies `npm install`
+-   build and watch source files with `npm start`
+-   enable **Developer mode** in your browser
+-   load **./dist** directory as an unpacked extension
 
 ### Available commands
 
-- `npm start`
-- `npm run dev`
-- `npm run build`
-- `./release.sh`
-
----
-
-This is a new version of previous one [developed for classic Google Calendar](https://github.com/crazko/calex-classic), that is not available anymore.
+-   `npm start`
+-   `npm run dev`
+-   `npm run build`
