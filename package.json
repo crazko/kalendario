@@ -18,7 +18,7 @@
     "build": "webpack --mode=production"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.76",
+    "@types/chrome": "0.0.77",
     "@types/es6-promise": "3.3.0",
     "@types/gapi.client.calendar": "^3.0.0",
     "babel-core": "^6.26.3",
