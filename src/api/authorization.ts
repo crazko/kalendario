@@ -46,7 +46,7 @@ const getTokens = (code: string) => {
     });
 };
 
-const initialize = () => {
+export const initialize = () => {
   let params = `?client_id=${settings.client_id}`;
   params += `&scope=${manifest.oauth2.scopes.join(' ')}`;
   params += `&redirect_uri=${settings.redirect_uri}`;
@@ -118,5 +118,3 @@ export const revokeTokens = () => {
 export const invalidTokens = () =>
   typeof localStorage['expiration'] === undefined ||
   localStorage['expiration'] < new Date().getTime();
-
-export default initialize;

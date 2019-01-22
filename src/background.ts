@@ -1,5 +1,5 @@
 import { messages, logDebug } from './utils';
-import initialize, { revokeTokens, invalidTokens } from './api/authorization';
+import { initialize, revokeTokens, invalidTokens } from './api/authorization';
 import { getCalendars, getEvent, sendEventToContent } from './api/calendar';
 import { EventsMessage } from './event';
 
