@@ -1,10 +1,3 @@
-const EVENT_ROW_CLASS = 'taTyDe';
-
-interface IMessage<T> {
-  msg: string;
-  data: T;
-}
-
 interface IEvent {
   id: string;
   calendarName: string;
@@ -18,8 +11,50 @@ interface IGapiEvent {
   event: gapi.client.calendar.Event;
 }
 
+interface IMessage<T> {
+  msg: string;
+  data: T;
+}
+
 export type GapiEventMessage = IMessage<IGapiEvent>;
 export type EventsMessage = IMessage<IEvents>;
+
+const EVENT_ROW_CLASS = 'taTyDe';
+
+export enum messages {
+  FETCH_EVENTS = 'FETCH_EVENTS',
+  SHOW_EVENT = 'SHOW_EVENT',
+}
+
+export const sendEventToContent = (
+  event: gapi.client.calendar.Event,
+  message: string,
+) => {
+  // Do not send event without description
+  if (!event.hasOwnProperty('description')) {
+    return Promise.reject(
+      `Event "${event.summary}" doesn't have a description.`,
+    );
+  }
+
+  chrome.tabs.query(
+    {
+      url: 'https://calendar.google.com/calendar*',
+    },
+    tabs => {
+      tabs.forEach(tab => {
+        chrome.tabs.sendMessage(tab.id, {
+          msg: message,
+          data: {
+            event,
+          },
+        });
+      });
+    },
+  );
+
+  return Promise.resolve(`Sending event "${event.summary}".`);
+};
 
 const getEventId = (element: HTMLElement) => {
   // Reminders have different eventid which cause an error with atop()

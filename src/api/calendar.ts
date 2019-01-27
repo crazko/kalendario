@@ -1,4 +1,4 @@
-import { logDebug } from '../utils';
+import { logger } from '../utils/logger';
 import { apiUrl } from './authorization';
 
 interface ICalendars {
@@ -25,7 +25,7 @@ const getCalendarList = () =>
       return localStorage['calendars'];
     })
     .catch(error => {
-      logDebug(error);
+      logger(error);
     });
 
 export const getCalendars = (): ICalendars =>
@@ -48,36 +48,6 @@ export const getEvent = (calendarId: string, eventId: string) => {
   })
     .then(response => response.json())
     .catch(error => {
-      logDebug(error);
+      logger(error);
     });
-};
-
-export const sendEventToContent = (
-  event: gapi.client.calendar.Event,
-  message: string,
-) => {
-  // Do not send event without description
-  if (!event.hasOwnProperty('description')) {
-    return Promise.reject(
-      `Event "${event.summary}" doesn't have a description.`,
-    );
-  }
-
-  chrome.tabs.query(
-    {
-      url: 'https://calendar.google.com/calendar*',
-    },
-    tabs => {
-      tabs.forEach(tab => {
-        chrome.tabs.sendMessage(tab.id, {
-          msg: message,
-          data: {
-            event,
-          },
-        });
-      });
-    },
-  );
-
-  return Promise.resolve(`Sending event "${event.summary}".`);
 };

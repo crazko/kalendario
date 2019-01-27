@@ -1,9 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 
 module.exports = (env, argv) => {
+  console.log(env);
   const isProductionRun = argv.mode === 'production';
 
   return {
@@ -52,6 +54,9 @@ module.exports = (env, argv) => {
           from: 'src/manifest.json',
         },
       ]),
+      new webpack.DefinePlugin({
+        DEBUG: isProductionRun ? JSON.stringify(false) : JSON.stringify(true),
+      }),
       argv.watch ? new ChromeExtensionReloader() : null,
     ].filter(plugin => !!plugin),
   };

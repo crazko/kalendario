@@ -1,5 +1,9 @@
-import { messages, logDebug } from './utils';
-import { getAllEvents, addDescriptionToEvent, GapiEventMessage } from './event';
+import {
+  messages,
+  GapiEventMessage,
+  getAllEvents,
+  addDescriptionToEvent,
+} from './actions/actions';
 
 // Check for change in calendar.
 // Gather all events and send them to background to process
