@@ -87,7 +87,7 @@ export const getAllEvents = (): IEvent[] => {
 
 export const addDescriptionToEvent = (eventId: string, description: string) => {
   const classNameDescription = 'calex__description';
-  const classNameHasDescription = 'calex__event--has-description';
+  // const classNameHasDescription = 'calex__event--has-description';
 
   const contentElement = document.createElement('div');
   const descriptionElement = document.createElement('div');
@@ -107,5 +107,5 @@ export const addDescriptionToEvent = (eventId: string, description: string) => {
   descriptionElement.appendChild(contentElement);
 
   event.appendChild(descriptionElement);
-  event.classList.add(classNameHasDescription);
+  // event.classList.add(classNameHasDescription);
 };

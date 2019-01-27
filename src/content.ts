@@ -11,15 +11,12 @@ const observer = new MutationObserver(mutations => {
         events: getAllEvents(),
       },
     },
-    response => {
-      logDebug(`Events recieved.`);
-    },
+    response => {},
   );
 });
 
 observer.observe(document.querySelector('div[role="main"]').parentElement, {
   childList: true,
-  characterData: true,
   subtree: true,
 });
 
