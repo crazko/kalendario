@@ -21,7 +21,13 @@ interface IMessage<T> {
 export type GapiEventMessage = IMessage<IGapiEvent>;
 export type EventsMessage = IMessage<IEvents>;
 
-const EVENT_ROW_CLASS = 'taTyDe';
+enum cssClass {
+  eventRow = 'taTyDe',
+  event = 'calex__event',
+  eventMultiDay = 'calex__event--multiday',
+  eventDescription = 'calex__description',
+  eventContent = 'calex__description--content',
+}
 
 export enum messages {
   FETCH_EVENTS = 'FETCH_EVENTS',
@@ -73,13 +79,12 @@ const getEventCalendarName = (element: HTMLElement) => element.dataset.text;
  */
 export const getAllEvents = (): IEvent[] => {
   const eventIds: string[] = [];
-  const rowNodes = document.getElementsByClassName(EVENT_ROW_CLASS);
+  const rowNodes = document.getElementsByClassName(cssClass.eventRow);
 
-  // const rows = Array.from(rowNodes).reduce(rowNodesReducer, []);
   const rows = Array.from(rowNodes).filter(
     (row: Element) =>
-      !row.classList.contains('calex__event--multiday') &&
-      row.getElementsByClassName('calex__description').length === 0,
+      !row.classList.contains(cssClass.eventMultiDay) &&
+      row.getElementsByClassName(cssClass.eventDescription).length === 0,
     // !(
     //   row.children &&
     //   row.children[1] &&
@@ -100,7 +105,7 @@ export const getAllEvents = (): IEvent[] => {
 
     // Event is multi-day event, does not need to handle it again.
     if (eventIds.includes(eventId)) {
-      row.classList.add('calex__event--multiday');
+      row.classList.add(cssClass.eventMultiDay);
       return events;
     }
 
@@ -112,7 +117,7 @@ export const getAllEvents = (): IEvent[] => {
 
     // Mark rows so they are easily accessible when adding description
     row.id = eventId;
-    row.classList.add('calex__event');
+    row.classList.add(cssClass.event);
 
     events.push({
       id: eventId,
@@ -127,23 +132,23 @@ export const getAllEvents = (): IEvent[] => {
 };
 
 export const addDescriptionToEvent = (eventId: string, description: string) => {
-  const classNameDescription = 'calex__description';
-
-  const contentElement = document.createElement('div');
-  const descriptionElement = document.createElement('div');
   const event = document.getElementById(eventId);
 
   // Remove all previously added nodes
-  const addedDescriptions = event.getElementsByClassName(classNameDescription);
+  const addedDescriptions = event.getElementsByClassName(
+    cssClass.eventDescription,
+  );
 
   Array.from(addedDescriptions).forEach((element: Element) => {
     event.removeChild(element);
   });
 
-  contentElement.className = 'calex__description--content';
+  const contentElement = document.createElement('div');
+  contentElement.className = cssClass.eventContent;
   contentElement.insertAdjacentHTML('afterbegin', description);
 
-  descriptionElement.className = classNameDescription;
+  const descriptionElement = document.createElement('div');
+  descriptionElement.className = cssClass.eventDescription;
   descriptionElement.appendChild(contentElement);
 
   event.appendChild(descriptionElement);
