@@ -1,7 +1,8 @@
-import { messages, EventsMessage, sendEventToContent } from './actions/actions';
-import { logger } from './utils/logger';
+import { sendEventToContent } from './actions/actions';
 import { initialize, revokeTokens, invalidTokens } from './api/authorization';
 import { getCalendars, getEvent } from './api/calendar';
+import { messages, EventsMessage } from './utils/definitions';
+import { logger } from './utils/logger';
 
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install') {

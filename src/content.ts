@@ -1,9 +1,5 @@
-import {
-  messages,
-  GapiEventMessage,
-  getAllEvents,
-  addDescriptionToEvent,
-} from './actions/actions';
+import { getAllEvents, addDescriptionToEvent } from './actions/actions';
+import { messages, GapiEventMessage } from './utils/definitions';
 
 import { logger } from './utils/logger';
 
