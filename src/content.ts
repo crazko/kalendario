@@ -5,24 +5,23 @@ import {
   addDescriptionToEvent,
 } from './actions/actions';
 
-// Check for change in calendar.
-// Gather all events and send them to background to process
-const observer = new MutationObserver(mutations => {
+import { logger } from './utils/logger';
+
+const sendMessage = () => {
+  const events = getAllEvents();
+
   chrome.runtime.sendMessage(
     {
       msg: messages.FETCH_EVENTS,
       data: {
-        events: getAllEvents(),
+        events: events,
       },
     },
     response => {},
   );
-});
+};
 
-observer.observe(document.querySelector('div[role="main"]').parentElement, {
-  childList: true,
-  subtree: true,
-});
+const checkForEvents = setInterval(sendMessage, 2000);
 
 // Wait for processed events and paste their data
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

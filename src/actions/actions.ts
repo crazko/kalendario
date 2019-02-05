@@ -1,3 +1,5 @@
+import { logger } from '../utils/logger';
+
 interface IEvent {
   id: string;
   calendarName: string;
@@ -56,9 +58,9 @@ export const sendEventToContent = (
   return Promise.resolve(`Sending event "${event.summary}".`);
 };
 
-const getEventId = (element: HTMLElement) => {
+const getEventId = (hiddenEventId: string) => {
   // Reminders have different eventid which cause an error with atop()
-  const dataAttrEventId = atob(element.dataset.eventid);
+  const dataAttrEventId = atob(hiddenEventId);
   const [eventId, account] = dataAttrEventId.split(' ');
 
   return eventId;
@@ -70,38 +72,42 @@ const getEventCalendarName = (element: HTMLElement) => element.dataset.text;
  * Gets all events from calendar.
  */
 export const getAllEvents = (): IEvent[] => {
+  const eventIds: string[] = [];
   const rowNodes = document.getElementsByClassName(EVENT_ROW_CLASS);
 
-  // Get only correct rows
-  const rowNodesReducer = (rows: Element[], row: Element) => {
-    if (
-      !row.classList.contains('calex__event') &&
-      row.children &&
-      (row.children.length === 2 &&
-        row.children[1].children &&
-        row.children[1].children.length === 3)
-    ) {
-      rows.push(row);
-    }
-
-    return rows;
-  };
-
-  const rows = Array.from(rowNodes).reduce(rowNodesReducer, []);
+  // const rows = Array.from(rowNodes).reduce(rowNodesReducer, []);
+  const rows = Array.from(rowNodes).filter(
+    (row: Element) =>
+      !row.classList.contains('calex__event--multiday') &&
+      row.getElementsByClassName('calex__description').length === 0,
+    // !(
+    //   row.children &&
+    //   row.children[1] &&
+    //   row.children[1].children[1].getElementsByTagName('span')
+    // ),
+  );
 
   const rowsReducer = (events: IEvent[], row: Element) => {
-    const eventElement = row.children[1] as HTMLElement;
-    const calendarElement = row.children[1].children[2]
-      .children[0] as HTMLElement;
-
     let eventId;
+    const eventElement = row.children[1] as HTMLElement;
 
     try {
-      eventId = getEventId(eventElement);
+      eventId = getEventId(eventElement.dataset.eventid);
+      logger({ eventId: eventElement.dataset.eventid });
     } catch (e) {
       return events;
     }
 
+    // Event is multi-day event, does not need to handle it again.
+    if (eventIds.includes(eventId)) {
+      row.classList.add('calex__event--multiday');
+      return events;
+    }
+
+    eventIds.push(eventId);
+
+    const calendarElement = row.children[1].children[2]
+      .children[0] as HTMLElement;
     const calendarName = getEventCalendarName(calendarElement);
 
     // Mark rows so they are easily accessible when adding description
@@ -130,7 +136,7 @@ export const addDescriptionToEvent = (eventId: string, description: string) => {
   // Remove all previously added nodes
   const addedDescriptions = event.getElementsByClassName(classNameDescription);
 
-  [...addedDescriptions].forEach((element: Element) => {
+  Array.from(addedDescriptions).forEach((element: Element) => {
     event.removeChild(element);
   });
 
