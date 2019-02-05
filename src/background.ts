@@ -23,23 +23,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       req.data.events.forEach(event => {
         const calendarId = calendars[event.calendarName];
 
-        sendEventToContent(
-          {
-            id: event.id,
-            summary: 'foo' + Math.floor(Math.random() * 1000),
-            description: 'foo' + Math.floor(Math.random() * 1000),
-          },
-          messages.SHOW_EVENT,
-        );
-
-        // getEvent(calendarId, event.id)
-        //   .then(event => sendEventToContent(event, messages.SHOW_EVENT))
-        //   .then(summary => {
-        //     logger(summary);
-        //   })
-        //   .catch(error => {
-        //     logger(error);
-        //   });
+        if (true) {
+          sendEventToContent(
+            {
+              id: event.id,
+              summary: 'foo' + Math.floor(Math.random() * 1000),
+              description: 'foo' + Math.floor(Math.random() * 1000),
+            },
+            messages.SHOW_EVENT,
+          );
+        } else {
+          getEvent(calendarId, event.id)
+            .then(event => sendEventToContent(event, messages.SHOW_EVENT))
+            .then(summary => {
+              logger(summary);
+            })
+            .catch(error => {
+              logger(error);
+            });
+        }
       });
 
       break;
