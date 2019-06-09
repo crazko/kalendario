@@ -1,11 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 
 module.exports = (env, argv) => {
-  console.log(env);
   const isProductionRun = argv.mode === 'production';
 
   return {
@@ -37,7 +36,9 @@ module.exports = (env, argv) => {
       extensions: ['.ts'],
     },
     plugins: [
-      new CleanWebpackPlugin(['dist']),
+      new CleanWebpackPlugin({
+        cleanStaleWebpackAssets: false, // resolve conflict with `CopyWebpackPlugin`
+      }),
       new CopyWebpackPlugin([
         {
           from: 'src/assets/_locales',
