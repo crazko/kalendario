@@ -1,4 +1,3 @@
-import { logger } from '../utils/logger';
 import { cssClass, IEvent } from '../utils/definitions';
 
 export const sendEventToContent = (
@@ -65,7 +64,7 @@ export const getAllEvents = (): IEvent[] => {
 
     try {
       eventId = getEventId(eventElement.dataset.eventid);
-      logger({ eventId: eventElement.dataset.eventid });
+      console.log({ eventId: eventElement.dataset.eventid });
     } catch (e) {
       return events;
     }

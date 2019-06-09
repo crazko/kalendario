@@ -1,5 +1,3 @@
-import { logger } from '../utils/logger';
-
 const manifest = chrome.runtime.getManifest();
 
 const settings = {
@@ -42,7 +40,7 @@ const getTokens = (code: string) => {
       localStorage['expiration'] = getExpirationDate(new Date(), 45);
     })
     .catch(error => {
-      logger(error);
+      console.log(error);
     });
 };
 
@@ -73,7 +71,7 @@ export const initialize = () => {
 
         getTokens(code);
       } else {
-        logger(chrome.runtime.lastError);
+        console.log(chrome.runtime.lastError);
       }
     },
   );
@@ -89,7 +87,7 @@ const validateTokens = () => {
       }
     })
     .catch(error => {
-      logger(error);
+      console.log(error);
     });
 };
 
@@ -111,7 +109,7 @@ export const revokeTokens = () => {
       localStorage['expiration'] = getExpirationDate(new Date(), 45);
     })
     .catch(error => {
-      logger(error);
+      console.log(error);
     });
 };
 

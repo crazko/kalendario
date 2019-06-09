@@ -1,8 +1,6 @@
 import { getAllEvents, addDescriptionToEvent } from './actions/actions';
 import { messages, GapiEventMessage } from './utils/definitions';
 
-import { logger } from './utils/logger';
-
 const sendMessage = () => {
   const events = getAllEvents();
 

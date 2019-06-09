@@ -1,4 +1,3 @@
-import { logger } from '../utils/logger';
 import { apiUrl } from './authorization';
 
 interface ICalendars {
@@ -25,7 +24,7 @@ const getCalendarList = () =>
       return localStorage['calendars'];
     })
     .catch(error => {
-      logger(error);
+      console.log(error);
     });
 
 export const getCalendars = (): ICalendars =>
@@ -48,6 +47,6 @@ export const getEvent = (calendarId: string, eventId: string) => {
   })
     .then(response => response.json())
     .catch(error => {
-      logger(error);
+      console.log(error);
     });
 };

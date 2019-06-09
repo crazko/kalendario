@@ -2,7 +2,6 @@ import { sendEventToContent } from './actions/actions';
 import { initialize, revokeTokens, invalidTokens } from './api/authorization';
 import { getCalendars, getEvent } from './api/calendar';
 import { messages, EventsMessage } from './utils/definitions';
-import { logger } from './utils/logger';
 
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install') {
@@ -36,10 +35,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           getEvent(calendarId, event.id)
             .then(event => sendEventToContent(event, messages.SHOW_EVENT))
             .then(summary => {
-              logger(summary);
+              console.log(summary);
             })
             .catch(error => {
-              logger(error);
+              console.log(error);
             });
         }
       });
