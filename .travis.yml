@@ -1,9 +1,9 @@
 language: node_js
-node_js: node
+node_js: lts/*
 
 # before_install: npm install -g greenkeeper-lockfile@1
 
-install: npm install
+install: npm ci
 
 # before_script: greenkeeper-lockfile-update
 
@@ -12,4 +12,4 @@ script: npm run dev
 # after_script: greenkeeper-lockfile-upload
 
 notifications:
-    email: false
+  email: false
