@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
+require('dotenv').config();
 
 module.exports = (env, argv) => {
   const isProductionRun = argv.mode === 'production';
@@ -19,13 +20,6 @@ module.exports = (env, argv) => {
     },
     module: {
       rules: [
-        {
-          test: /\.tsx?$/,
-          loader: 'tslint-loader',
-          options: {
-            configFile: 'tslint.json',
-          },
-        },
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
@@ -53,12 +47,30 @@ module.exports = (env, argv) => {
         },
         {
           from: 'src/manifest.json',
+          transform(content, path) {
+            return processManifestFile(content, isProductionRun);
+          },
         },
       ]),
       new webpack.DefinePlugin({
-        DEBUG: isProductionRun ? JSON.stringify(false) : JSON.stringify(true),
+        __DEBUG__: isProductionRun
+          ? JSON.stringify(false)
+          : JSON.stringify(true),
+        __CLIENT_ID__: JSON.stringify(process.env.CLIENT_ID),
+        __CLIENT_SECRET__: JSON.stringify(process.env.CLIENT_SECRET),
       }),
       argv.watch ? new ChromeExtensionReloader() : null,
     ].filter(plugin => !!plugin),
   };
+};
+
+const processManifestFile = (manifest, removeUnnecessaryKey) => {
+  manifest = JSON.parse(manifest);
+  manifest.oauth2.client_id = process.env.CLIENT_ID;
+
+  if (removeUnnecessaryKey) {
+    delete manifest.key;
+  }
+
+  return JSON.stringify(manifest, null, 2);
 };

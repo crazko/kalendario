@@ -1,8 +1,8 @@
 const manifest = chrome.runtime.getManifest();
 
 const settings = {
-  client_id: manifest.oauth2.client_id,
-  client_secret: 'usq5dT6yGdw6sjdlE65XWHp5',
+  client_id: manifest.oauth2!.client_id,
+  client_secret: __CLIENT_SECRET__,
   redirect_uri: chrome.identity.getRedirectURL('provider_cb'),
 };
 
@@ -46,7 +46,7 @@ const getTokens = (code: string) => {
 
 export const initialize = () => {
   let params = `?client_id=${settings.client_id}`;
-  params += `&scope=${manifest.oauth2.scopes.join(' ')}`;
+  params += `&scope=${manifest.oauth2!.scopes!.join(' ')}`;
   params += `&redirect_uri=${settings.redirect_uri}`;
   params += '&response_type=code'; // code - to get refresh and offline token?
   params += '&access_type=offline'; // offline not working with 'token' response type
@@ -59,7 +59,7 @@ export const initialize = () => {
     },
     responseUrl => {
       if (responseUrl) {
-        let code;
+        let code = '';
 
         // Get code from redirect url
         if (responseUrl.indexOf('=') >= 0) {

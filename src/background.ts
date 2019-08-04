@@ -1,7 +1,11 @@
-import { sendEventToContent } from './actions/actions';
 import { initialize, revokeTokens, invalidTokens } from './api/authorization';
-import { getCalendars, getEvent } from './api/calendar';
-import { messages, EventsMessage } from './utils/definitions';
+import { fetchEvent, fetchCalendarList } from './api/calendar';
+import {
+  isCalendarIdValid,
+  getCalendarsFromLocalStorage,
+  setCalendarsToLocalStorage,
+} from './app/calendar';
+import { message, Request } from './app/runtime';
 
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install') {
@@ -9,40 +13,61 @@ chrome.runtime.onInstalled.addListener(details => {
   }
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  switch (request.msg) {
-    case messages.FETCH_EVENTS:
-      if (invalidTokens()) {
-        revokeTokens();
-      }
-      const req = request as EventsMessage;
-      const calendars = getCalendars();
-      const summaries = [] as string[];
+chrome.runtime.onMessage.addListener(
+  (request: Request, sender, sendResponse) => {
+    if (invalidTokens()) {
+      revokeTokens();
+    }
 
-      req.data.events.forEach(event => {
-        const calendarId = calendars[event.calendarName];
+    let calendars = getCalendarsFromLocalStorage();
 
-        if (true) {
-          sendEventToContent(
-            {
-              id: event.id,
-              summary: 'foo' + Math.floor(Math.random() * 1000),
-              description: 'foo' + Math.floor(Math.random() * 1000),
-            },
-            messages.SHOW_EVENT,
-          );
-        } else {
-          getEvent(calendarId, event.id)
-            .then(event => sendEventToContent(event, messages.SHOW_EVENT))
-            .then(summary => {
-              console.log(summary);
-            })
-            .catch(error => {
-              console.log(error);
-            });
+    if (!calendars || (calendars && Object.keys(calendars).length <= 0)) {
+      (async () => {
+        try {
+          const calendarList = await fetchCalendarList();
+          setCalendarsToLocalStorage(calendarList);
+          calendars = getCalendarsFromLocalStorage();
+        } catch (error) {
+          console.log(error);
         }
-      });
+      })();
+    }
 
-      break;
-  }
-});
+    (async () => {
+      switch (request.message) {
+        case message.FETCH_EVENT:
+          const event = request.event;
+          const { id: eventId, calendarName } = event;
+          const calendarId =
+            calendarName && calendars && calendars[calendarName];
+
+          if (!calendarId || !isCalendarIdValid(calendarId)) {
+            console.log(
+              `Event '${eventId}' doesn't have proper calendar '${calendarId}'.`,
+            );
+
+            sendResponse(event);
+
+            break;
+          }
+
+          try {
+            const event = await fetchEvent(calendarId, eventId);
+            sendResponse(event);
+
+            console.log(
+              `Sending event "${event.summary}" with ID "${event.id}".`,
+            );
+          } catch (error) {
+            console.log(error);
+          }
+
+          break;
+      }
+    })();
+
+    // Signalize asynchronous call of `sendResponse`
+    // @see https://developer.chrome.com/extensions/messaging#simple
+    return true;
+  },
+);
