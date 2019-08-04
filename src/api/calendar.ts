@@ -1,52 +1,31 @@
 import { apiUrl } from './authorization';
 
-interface ICalendars {
-  [name: string]: string;
+export async function fetchCalendarList(): Promise<
+  gapi.client.calendar.CalendarList
+> {
+  const calendars = await fetch(apiUrl.calendarList, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer  ${localStorage['access_token']}`,
+    },
+  });
+
+  return await calendars.json();
 }
 
-const getCalendarList = () =>
-  fetch(apiUrl.calendarList, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer  ${localStorage['access_token']}`,
+export async function fetchEvent(
+  calendarId: string,
+  eventId: string,
+): Promise<gapi.client.calendar.Event> {
+  const event = await fetch(
+    `${apiUrl.calendar}/${calendarId}/events/${eventId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer  ${localStorage['access_token']}`,
+      },
     },
-  })
-    .then(response => response.json())
-    .then(data =>
-      data.items.reduce((list: any, calendar: any) => {
-        list[calendar.summary] = calendar.id;
-        return list;
-      }, {}),
-    )
-    .then(parsedData => {
-      localStorage['calendars'] = JSON.stringify(parsedData);
+  );
 
-      return localStorage['calendars'];
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
-export const getCalendars = (): ICalendars =>
-  (localStorage['calendars'] && JSON.parse(localStorage['calendars'])) ||
-  getCalendarList();
-
-export const getEvent = (calendarId: string, eventId: string) => {
-  // Filter out default calendars, ie. Week number, Holidays
-  if (!calendarId || calendarId.indexOf('#') > -1) {
-    return Promise.reject(
-      `Event '${eventId}' doesn't have proper calendar '${calendarId}'.`,
-    );
-  }
-
-  return fetch(`${apiUrl.calendar}/${calendarId}/events/${eventId}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer  ${localStorage['access_token']}`,
-    },
-  })
-    .then(response => response.json())
-    .catch(error => {
-      console.log(error);
-    });
-};
+  return await event.json();
+}

@@ -9,20 +9,20 @@
   width: 100%;
 }
 
-.calex__description--content {
+.calex__content {
   padding: 2em;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
 
 @media (min-width: 992px) {
-  .calex__description--content {
+  .calex__content {
     padding-left: 340px;
   }
 }
 
 @media (min-width: 1200px) {
-  .calex__description--content {
+  .calex__content {
     padding-right: 20%;
   }
 }

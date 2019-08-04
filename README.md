@@ -9,7 +9,7 @@ Descriptions are displayed in:
 - the agenda view
 - the search results
 
-![Calex in Google Calendar](docs/screenshot.png)
+![Calex in Google Calendar](docs/calex.gif)
 
 ## Installation
 
@@ -27,12 +27,22 @@ Tested in:
 
 - clone this repository `git clone git@github.com:crazko/calex.git`
 - install all dependencies `npm install`
+- create `.env` file with `mv .env.example .env` and put app variables
+  - visit [Google API Console](https://console.developers.google.com/)
+  - create new project
+  - enable Google Calendar API
+  - add scope `https://www.googleapis.com/auth/calendar.readonly` in **OAuth consent screen**
+  - create creadentials under Credentials, select **OAuth client ID** and choose **Web application**
+  - add `CLIENT_ID` and `CLIENT_SECRET` to the `.env` file (only the first part - before `.apps.googleusercontent.com`)
 - build and watch source files with `npm start`
 - enable **Developer mode** in your browser
-- load **./dist** directory as an unpacked extension
+- load `./dist` directory as an unpacked extension
 
 ### Available commands
 
-- `npm start`
-- `npm run dev`
-- `npm run build`
+| `npm run ...` | Description                         |
+| ------------- | ----------------------------------- |
+| `start`       | Start the app and watch for changes |
+| `dev`         | Make a development build            |
+| `build`       | Make a production build             |
+| `clear`       | Remove `./dist` folder              |

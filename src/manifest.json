@@ -13,13 +13,21 @@
   },
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnwHaL2nptIi5HkgxauDRJeC2g+LrsSXMEGjqM6iOhduRTSKZGb9ueTVgrBqSiQ/UZNwSCGdWlZPEk9GarCt0efECNtWk+nCZcBwujPpnONcdp0Zwmvw6lEdr4kHs/Z97zwNRoJAZqMl7cd6jvT3M7eGOxRqFuMNnL+d7kN5h7gN8s1jXzZtAAfZuphbUfQzFzcaE2HBX8+TwMJaWTnGdnOKNMRggYi6ZIpI4w4KWvTcKn5Ve/pM4cBb7VnPOiiuHbxPmy6YkHoFX8hVp22X3vOH51fdXhM6TBqtO6Nd4J85gz2efLaZsWJLXURWvTUGsbRJuz++6lORc4QaDVTk+xQIDAQAB",
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "background.js"
+    ]
   },
   "content_scripts": [
     {
-      "matches": ["https://calendar.google.com/*"],
-      "css": ["styles.css"],
-      "js": ["content.js"],
+      "matches": [
+        "https://calendar.google.com/*"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_idle"
     }
   ],
@@ -30,7 +38,9 @@
     "https://accounts.google.com/*"
   ],
   "oauth2": {
-    "client_id": "800330000065-4s9jkfceicmqgsgujet454t524qbct39.apps.googleusercontent.com",
-    "scopes": ["https://www.googleapis.com/auth/calendar.readonly"]
+    "client_id": "__CLIENT_ID__",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.readonly"
+    ]
   }
 }

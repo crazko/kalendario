@@ -1,7 +1,0 @@
-{
-  "rules": {
-    "class-name": true,
-    "no-any": true,
-    "semicolon": [true, "always"]
-  }
-}
