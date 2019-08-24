@@ -1,40 +1,36 @@
-import { IEvent } from './event';
+import { Calendars } from './calendar';
 
 export type Request =
-  | ReturnType<typeof addEventMessage>
-  | ReturnType<typeof fetchEventMessage>;
+  | ReturnType<typeof fetchEventMessage>
+  | ReturnType<typeof fetchCalendarListMessage>;
 
 export enum message {
-  ADD_EVENT = 'ADD_EVENT',
   FETCH_EVENT = 'FETCH_EVENT',
+  FETCH_CALENDAR_LIST = 'FETCH_CALENDAR_LIST',
 }
 
-export const addEventMessage = (event: gapi.client.calendar.Event) => ({
-  message: message.ADD_EVENT as message.ADD_EVENT,
-  event,
-});
-
-export const sendAddEventMessage = (event: gapi.client.calendar.Event) =>
-  chrome.tabs.query(
-    {
-      url: 'https://calendar.google.com/calendar*',
-    },
-    tabs => {
-      tabs.forEach(tab => {
-        chrome.tabs.sendMessage(tab.id!, addEventMessage(event));
-      });
-    },
-  );
-
-export const fetchEventMessage = (event: IEvent) => ({
+const fetchEventMessage = (calendarId: string, eventId: string) => ({
   message: message.FETCH_EVENT as message.FETCH_EVENT,
-  event,
+  calendarId,
+  eventId,
 });
 
 export const sendFetchEventMessage = (
-  event: IEvent,
-  proccessEvent: (event: gapi.client.calendar.Event | IEvent) => void,
+  calendarId: string,
+  eventId: string,
+  proccessEvent: (event: gapi.client.calendar.Event) => void,
 ) =>
-  chrome.runtime.sendMessage(fetchEventMessage(event), event => {
+  chrome.runtime.sendMessage(fetchEventMessage(calendarId, eventId), event => {
     proccessEvent(event);
+  });
+
+const fetchCalendarListMessage = () => ({
+  message: message.FETCH_CALENDAR_LIST as message.FETCH_CALENDAR_LIST,
+});
+
+export const sendFetchCalendarListMessage = (
+  proccessCalendarList: (calendarList: Calendars) => void,
+) =>
+  chrome.runtime.sendMessage(fetchCalendarListMessage(), calendarList => {
+    proccessCalendarList(calendarList);
   });

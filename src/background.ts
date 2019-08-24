@@ -1,10 +1,6 @@
 import { initialize, revokeTokens, invalidTokens } from './api/authorization';
 import { fetchEvent, fetchCalendarList } from './api/calendar';
-import {
-  isCalendarIdValid,
-  getCalendarsFromLocalStorage,
-  setCalendarsToLocalStorage,
-} from './app/calendar';
+import { isCalendarIdValid, normalizeCalendarList } from './app/calendar';
 import { message, Request } from './app/runtime';
 
 chrome.runtime.onInstalled.addListener(details => {
@@ -19,38 +15,38 @@ chrome.runtime.onMessage.addListener(
       revokeTokens();
     }
 
-    let calendars = getCalendarsFromLocalStorage();
+    switch (request.message) {
+      case message.FETCH_CALENDAR_LIST:
+        (async () => {
+          try {
+            const calendarList = await fetchCalendarList();
+            sendResponse(normalizeCalendarList(calendarList));
 
-    if (!calendars || (calendars && Object.keys(calendars).length <= 0)) {
-      (async () => {
-        try {
-          const calendarList = await fetchCalendarList();
-          setCalendarsToLocalStorage(calendarList);
-          calendars = getCalendarsFromLocalStorage();
-        } catch (error) {
-          console.log(error);
-        }
-      })();
-    }
-
-    (async () => {
-      switch (request.message) {
-        case message.FETCH_EVENT:
-          const event = request.event;
-          const { id: eventId, calendarName } = event;
-          const calendarId =
-            calendarName && calendars && calendars[calendarName];
-
-          if (!calendarId || !isCalendarIdValid(calendarId)) {
-            console.log(
-              `Event '${eventId}' doesn't have proper calendar '${calendarId}'.`,
-            );
-
-            sendResponse(event);
-
-            break;
+            console.log('Sending calendar list');
+          } catch (error) {
+            console.log(error);
           }
+        })();
 
+        break;
+
+      case message.FETCH_EVENT:
+        const { calendarId, eventId } = request;
+
+        if (!isCalendarIdValid(calendarId)) {
+          sendResponse({
+            id: eventId,
+            description: undefined,
+          });
+
+          console.log(
+            `Event '${eventId}' doesn't have proper calendar '${calendarId}'.`,
+          );
+
+          break;
+        }
+
+        (async () => {
           try {
             const event = await fetchEvent(calendarId, eventId);
             sendResponse(event);
@@ -61,10 +57,10 @@ chrome.runtime.onMessage.addListener(
           } catch (error) {
             console.log(error);
           }
+        })();
 
-          break;
-      }
-    })();
+        break;
+    }
 
     // Signalize asynchronous call of `sendResponse`
     // @see https://developer.chrome.com/extensions/messaging#simple

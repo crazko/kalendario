@@ -1,13 +1,23 @@
 import { combineReducers } from 'redux';
 import { Action, type } from './actions';
 import { Events } from '../app/event';
+import { Calendars } from '../app/calendar';
 
-const fetching = (state: string[] = [], action: Action) => {
+const calendars = (state: Calendars = {}, action: Action) => {
+  switch (action.type) {
+    case type.ADD_CALENDAR_LIST:
+      return action.calendarList;
+    default:
+      return state;
+  }
+};
+
+const fetchingEvents = (state: string[] = [], action: Action) => {
   switch (action.type) {
     case type.FETCH_EVENT:
       return Array.from(new Set([...state, action.eventId]));
     case type.ADD_EVENT:
-      return state.filter(eventId => eventId !== action.event.id);
+      return state.filter(eventId => eventId !== action.id);
     default:
       return state;
   }
@@ -16,7 +26,13 @@ const fetching = (state: string[] = [], action: Action) => {
 const events = (state: Events = {}, action: Action) => {
   switch (action.type) {
     case type.ADD_EVENT:
-      return { ...state, [action.event.id]: action.event };
+      return {
+        ...state,
+        [action.id]: {
+          id: action.id,
+          description: action.description,
+        },
+      };
     default:
       return state;
   }
@@ -25,8 +41,9 @@ const events = (state: Events = {}, action: Action) => {
 type State = ReturnType<typeof reducers>;
 
 export const reducers = combineReducers({
-  fetching,
+  calendars,
   events,
+  fetchingEvents,
 });
 
 // Selectors
@@ -35,4 +52,9 @@ export const getEvent = (state: State, eventId: string) =>
   state.events[eventId];
 
 export const isEventProcessed = (state: State, eventId: string) =>
-  state.fetching.includes(eventId);
+  state.fetchingEvents.includes(eventId);
+
+export const getCalendarByName = (state: State, calendarName: string) =>
+  Object.values(state.calendars).find(
+    calendar => !!calendar && calendar.name === calendarName,
+  );

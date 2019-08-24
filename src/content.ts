@@ -5,10 +5,23 @@ import {
   mainElementSelector,
   mainElementParentID,
 } from './app/types';
+import { Calendars } from './app/calendar';
 import { addEventDescription, getEventDataAttributes } from './app/event';
-import { sendFetchEventMessage } from './app/runtime';
-import { fetchEventAction, addEventAction } from './store/actions';
-import { reducers, isEventProcessed, getEvent } from './store/reducers';
+import {
+  sendFetchEventMessage,
+  sendFetchCalendarListMessage,
+} from './app/runtime';
+import {
+  fetchEventAction,
+  addEventAction,
+  addCalendarListAction,
+} from './store/actions';
+import {
+  reducers,
+  isEventProcessed,
+  getEvent,
+  getCalendarByName,
+} from './store/reducers';
 
 let storeLogger;
 let rowsObserver: IntersectionObserver;
@@ -47,15 +60,18 @@ const rowsObserverCallback = (entries: IntersectionObserverEntry[]) => {
         addEventDescription(row, event.description);
       }
 
-      if (!event && !isEventProcessed(store.getState(), eventId)) {
-        store.dispatch(fetchEventAction(eventId, calendarName));
+      const calendar = getCalendarByName(store.getState(), calendarName);
+      const calendarId = (calendar && calendar.id) || null;
 
-        sendFetchEventMessage(
-          {
-            id: eventId,
-            calendarName,
-          },
-          fetchedEvent => processFetchedEvent(fetchedEvent, row),
+      if (
+        !event &&
+        !isEventProcessed(store.getState(), eventId) &&
+        calendarId
+      ) {
+        store.dispatch(fetchEventAction(eventId));
+
+        sendFetchEventMessage(calendarId, eventId, fetchedEvent =>
+          processFetchedEvent(fetchedEvent, row),
         );
       }
 
@@ -69,6 +85,12 @@ const rowsObserverCallback = (entries: IntersectionObserverEntry[]) => {
 const calendarObserver = new MutationObserver(calendarObserverCallback);
 
 window.addEventListener('load', () => {
+  // Load calendars
+  sendFetchCalendarListMessage(calendarList =>
+    processFetchedCalendarList(calendarList),
+  );
+
+  // Start observing calendar
   const mainContentParent = document.getElementById(mainElementParentID);
 
   if (mainContentParent) {
@@ -94,15 +116,18 @@ const observeRows = (target: HTMLElement) => {
   rows.forEach(row => rowsObserver.observe(row));
 };
 
+const processFetchedCalendarList = (calendarList: Calendars) => {
+  store.dispatch(addCalendarListAction(calendarList));
+};
+
 const processFetchedEvent = (
   event: gapi.client.calendar.Event,
   row: HTMLElement,
 ) => {
-  const { id, description, organizer } = event;
-  const calendarName = organizer && organizer.displayName;
+  const { id, description } = event;
 
   if (id) {
-    store.dispatch(addEventAction(id, calendarName, description));
+    store.dispatch(addEventAction(id, description));
 
     if (description) {
       addEventDescription(row, description);
