@@ -15,9 +15,9 @@ const calendars = (state: Calendars = {}, action: Action) => {
 const fetchingEvents = (state: string[] = [], action: Action) => {
   switch (action.type) {
     case type.FETCH_EVENT:
-      return Array.from(new Set([...state, action.eventId]));
+      return Array.from(new Set([...state, action.id]));
     case type.ADD_EVENT:
-      return state.filter(eventId => eventId !== action.id);
+      return state.filter(id => id !== action.id);
     default:
       return state;
   }
