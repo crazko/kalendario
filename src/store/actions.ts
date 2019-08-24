@@ -17,9 +17,9 @@ export const addEventAction = (id: string, description?: string) => ({
   description,
 });
 
-export const fetchEventAction = (eventId: string) => ({
+export const fetchEventAction = (id: string) => ({
   type: type.FETCH_EVENT as type.FETCH_EVENT,
-  eventId,
+  id,
 });
 
 export const addCalendarListAction = (calendarList: Calendars) => ({
