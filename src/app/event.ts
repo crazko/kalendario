@@ -1,18 +1,14 @@
 import { CSSClass } from './types';
 
-export type Events = Record<string, ICompleteEvent | undefined>;
+export type Events = Record<string, IEvent | undefined>;
 
-export interface IEvent {
+interface IEvent {
   id: string;
-  calendarName?: string;
-}
-
-export interface ICompleteEvent extends IEvent {
   description?: string;
 }
 
 const getEventId = (eventId: string) => {
-  // Reminders have different eventid which cause an error
+  // Reminders have different event id which cause an error
   try {
     const dataAttrEventId = atob(eventId);
     const [id, account] = dataAttrEventId.split(' ');
