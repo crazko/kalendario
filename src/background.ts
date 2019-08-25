@@ -24,7 +24,7 @@ chrome.runtime.onMessage.addListener(
 
             console.log('Sending calendar list');
           } catch (error) {
-            console.log(error);
+            console.error(error);
           }
         })();
 
@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener(
             description: undefined,
           });
 
-          console.log(
+          console.warn(
             `Event '${eventId}' doesn't have proper calendar '${calendarId}'.`,
           );
 
@@ -49,13 +49,16 @@ chrome.runtime.onMessage.addListener(
         (async () => {
           try {
             const event = await fetchEvent(calendarId, eventId);
-            sendResponse(event);
+            sendResponse({
+              id: eventId,
+              description: event.description,
+            });
 
             console.log(
               `Sending event "${event.summary}" with ID "${event.id}".`,
             );
           } catch (error) {
-            console.log(error);
+            console.error(error);
           }
         })();
 
