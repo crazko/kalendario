@@ -5,7 +5,6 @@ import {
   mainElementSelector,
   mainElementParentID,
 } from './app/types';
-import { Calendars } from './app/calendar';
 import { addEventDescription, getEventDataAttributes } from './app/event';
 import {
   sendFetchEventMessage,
@@ -43,7 +42,9 @@ const calendarObserverCallback = (mutations: MutationRecord[]) => {
 
     // All rows have been added at once
     if (target.querySelector(mainElementSelector)) {
-      observeRows(target);
+      Array.from(target.getElementsByClassName(CSSClass.eventRow)).forEach(
+        row => rowsObserver.observe(row),
+      );
     }
   });
 };
@@ -70,9 +71,15 @@ const rowsObserverCallback = (entries: IntersectionObserverEntry[]) => {
       ) {
         store.dispatch(fetchEventAction(eventId));
 
-        sendFetchEventMessage(calendarId, eventId, fetchedEvent =>
-          processFetchedEvent(fetchedEvent, row),
-        );
+        sendFetchEventMessage(calendarId, eventId, fetchedEvent => {
+          store.dispatch(
+            addEventAction(fetchedEvent.id, fetchedEvent.description),
+          );
+
+          if (fetchedEvent.description) {
+            addEventDescription(row, fetchedEvent.description);
+          }
+        });
       }
 
       addEventTimeout(row);
@@ -87,7 +94,7 @@ const calendarObserver = new MutationObserver(calendarObserverCallback);
 window.addEventListener('load', () => {
   // Load calendars
   sendFetchCalendarListMessage(calendarList =>
-    processFetchedCalendarList(calendarList),
+    store.dispatch(addCalendarListAction(calendarList)),
   );
 
   // Start observing calendar
@@ -109,31 +116,6 @@ window.addEventListener('load', () => {
     );
   }
 });
-
-const observeRows = (target: HTMLElement) => {
-  const rows = Array.from(target.getElementsByClassName(CSSClass.eventRow));
-
-  rows.forEach(row => rowsObserver.observe(row));
-};
-
-const processFetchedCalendarList = (calendarList: Calendars) => {
-  store.dispatch(addCalendarListAction(calendarList));
-};
-
-const processFetchedEvent = (
-  event: gapi.client.calendar.Event,
-  row: HTMLElement,
-) => {
-  const { id, description } = event;
-
-  if (id) {
-    store.dispatch(addEventAction(id, description));
-
-    if (description) {
-      addEventDescription(row, description);
-    }
-  }
-};
 
 /**
  * First load causes flash of event rows that removes previously added description.

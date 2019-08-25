@@ -2,7 +2,7 @@ import { CSSClass } from './types';
 
 export type Events = Record<string, IEvent | undefined>;
 
-interface IEvent {
+export interface IEvent {
   id: string;
   description?: string;
 }

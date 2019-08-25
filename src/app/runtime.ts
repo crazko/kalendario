@@ -1,4 +1,5 @@
 import { Calendars } from './calendar';
+import { IEvent } from './event';
 
 export type Request =
   | ReturnType<typeof fetchEventMessage>
@@ -18,19 +19,19 @@ const fetchEventMessage = (calendarId: string, eventId: string) => ({
 export const sendFetchEventMessage = (
   calendarId: string,
   eventId: string,
-  proccessEvent: (event: gapi.client.calendar.Event) => void,
+  responseCallback: (event: IEvent) => void,
 ) =>
-  chrome.runtime.sendMessage(fetchEventMessage(calendarId, eventId), event => {
-    proccessEvent(event);
-  });
+  chrome.runtime.sendMessage(fetchEventMessage(calendarId, eventId), event =>
+    responseCallback(event),
+  );
 
 const fetchCalendarListMessage = () => ({
   message: message.FETCH_CALENDAR_LIST as message.FETCH_CALENDAR_LIST,
 });
 
 export const sendFetchCalendarListMessage = (
-  proccessCalendarList: (calendarList: Calendars) => void,
+  responseCallback: (calendarList: Calendars) => void,
 ) =>
-  chrome.runtime.sendMessage(fetchCalendarListMessage(), calendarList => {
-    proccessCalendarList(calendarList);
-  });
+  chrome.runtime.sendMessage(fetchCalendarListMessage(), calendarList =>
+    responseCallback(calendarList),
+  );
