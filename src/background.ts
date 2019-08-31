@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener(
             description: undefined,
           });
 
-          console.warn(
+          console.log(
             `Event '${eventId}' doesn't have proper calendar '${calendarId}'.`,
           );
 

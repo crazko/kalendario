@@ -33,7 +33,7 @@ Tested in:
   - enable **Google Calendar API**
   - add scope `https://www.googleapis.com/auth/calendar.readonly` in **OAuth consent screen**
   - create credentials under Credentials, select **OAuth client ID** and choose **Web application**
-  - add `CLIENT_ID` and `CLIENT_SECRET` to the `.env` file (only the first part - before `.apps.googleusercontent.com`)
+  - add `CLIENT_ID` and `CLIENT_SECRET` to the `.env`
 - build and watch source files with `npm start`
 - enable **Developer mode** in your browser
 - load `./dist` directory as an unpacked extension
