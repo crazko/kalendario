@@ -3,15 +3,16 @@ node_js: lts/*
 
 install: npm ci
 
-script: npm run build
-
-after_script: cd dist && zip -r ../calex.zip .
+script:
+  - npm run build
+  - cd dist && zip -r ../calex.zip .
 
 deploy:
   provider: releases
   api_key:
     secure: $GH_TOKEN
-  file: calex.zip
+  file:
+    - calex.zip
   skip_cleanup: true
   on:
     repo: crazko/calex
