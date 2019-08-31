@@ -27,12 +27,12 @@ Tested in:
 
 - clone this repository `git clone git@github.com:crazko/calex.git`
 - install all dependencies `npm install`
-- create `.env` file with `mv .env.example .env` and put app variables
+- create `.env` file with `cp .env.example .env` and put app variables
   - visit [Google API Console](https://console.developers.google.com/)
   - create new project
-  - enable Google Calendar API
+  - enable **Google Calendar API**
   - add scope `https://www.googleapis.com/auth/calendar.readonly` in **OAuth consent screen**
-  - create creadentials under Credentials, select **OAuth client ID** and choose **Web application**
+  - create credentials under Credentials, select **OAuth client ID** and choose **Web application**
   - add `CLIENT_ID` and `CLIENT_SECRET` to the `.env` file (only the first part - before `.apps.googleusercontent.com`)
 - build and watch source files with `npm start`
 - enable **Developer mode** in your browser

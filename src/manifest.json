@@ -2,7 +2,7 @@
   "name": "__MSG_extName__",
   "short_name": "__MSG_extShortName__",
   "description": "__MSG_extDesc__",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "homepage_url": "https://github.com/crazko/calex",
   "manifest_version": 2,
   "default_locale": "en",
