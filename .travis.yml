@@ -3,9 +3,9 @@ node_js: lts/*
 
 install: npm ci
 
-script:
-  - npm run build
-  - cd dist && zip -r ../calex.zip .
+script: npm run build
+
+after_success: cd dist && zip -r ../calex.zip . && cd ..
 
 deploy:
   provider: releases
