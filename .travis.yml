@@ -1,15 +1,21 @@
 language: node_js
 node_js: lts/*
 
-# before_install: npm install -g greenkeeper-lockfile@1
-
 install: npm ci
 
-# before_script: greenkeeper-lockfile-update
+script: npm run build
 
-script: npm run dev
+after_script: cd dist && zip -r ../calex.zip .
 
-# after_script: greenkeeper-lockfile-upload
+deploy:
+  provider: releases
+  api_key:
+    secure: $GH_TOKEN
+  file: calex.zip
+  skip_cleanup: true
+  on:
+    repo: crazko/calex
+    tags: true
 
 notifications:
   email: false
