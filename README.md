@@ -1,8 +1,10 @@
-# Calex
+<p align="center">
+  <img src="docs/logo.png">
+</p>
 
 [![Build Status](https://travis-ci.org/crazko/calex.svg?branch=master)](https://travis-ci.org/crazko/calex)
 
-A browser extension that shows events' descriptions in Google Calendar.
+A browser extension that shows event descriptions in Google Calendar.
 
 Descriptions are displayed in:
 
