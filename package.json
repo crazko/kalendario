@@ -1,11 +1,11 @@
 {
-  "name": "calex",
+  "name": "kalendario",
   "author": {
     "name": "Roman Vesely",
     "url": "https://romanvesely.com",
     "email": "info@romanvesely.com"
   },
-  "homepage": "https://github.com/crazko/calex",
+  "homepage": "https://github.com/crazko/kalendario",
   "private": true,
   "prettier": {
     "singleQuote": true,

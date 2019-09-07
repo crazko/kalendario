@@ -50,7 +50,6 @@ nav a {
 
 .hero {
   background: linear-gradient(to bottom right, #466da7, #c22a58);
-  color: #add8e6;
   margin-bottom: 6rem;
   padding: 0 1rem;
   position: relative;
@@ -68,7 +67,6 @@ nav a {
 .hero__image {
   display: block;
   margin: 0 auto;
-  /* border-radius: 0.5rem; */
   box-shadow: 0 1rem 3rem 0 rgba(0, 0, 0, 0.2),
     0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
   margin-bottom: -3rem;

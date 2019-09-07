@@ -1,28 +1,28 @@
-.calex__event {
+.kalendario__event {
   display: flex;
   flex-wrap: wrap;
 }
 
-.calex__description {
+.kalendario__description {
   background: linear-gradient(to bottom, #efefef, #fafafa 1em, #fafafa 1em);
   border-bottom: #efefef 1px solid;
   width: 100%;
 }
 
-.calex__content {
+.kalendario__content {
   padding: 2em;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
 
 @media (min-width: 992px) {
-  .calex__content {
+  .kalendario__content {
     padding-left: 340px;
   }
 }
 
 @media (min-width: 1200px) {
-  .calex__content {
+  .kalendario__content {
     padding-right: 20%;
   }
 }

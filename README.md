@@ -2,7 +2,7 @@
   <img src="docs/logo.png">
 </p>
 
-[![Build Status](https://travis-ci.org/crazko/calex.svg?branch=master)](https://travis-ci.org/crazko/calex)
+[![Build Status](https://travis-ci.org/crazko/kalendario.svg?branch=master)](https://travis-ci.org/crazko/kalendario)
 
 A browser extension that shows event descriptions in Google Calendar.
 
@@ -11,11 +11,11 @@ Descriptions are displayed in:
 - the agenda view
 - the search results
 
-![Calex in Google Calendar](docs/calex.gif)
+![Kalendario in Google Calendar](docs/live.gif)
 
 ## Installation
 
-Install from [Chrome Web Store](https://chrome.google.com/webstore/detail/calex-for-google-calendar/ccoehijdbponhcemihobmdpaeenmgchg).
+Install from [Chrome Web Store](https://chrome.google.com/webstore/detail/kalendario-for-google-calendar/ccoehijdbponhcemihobmdpaeenmgchg).
 
 ### Browsers
 
@@ -27,7 +27,7 @@ Tested in:
 
 ## Development
 
-- clone this repository `git clone git@github.com:crazko/calex.git`
+- clone this repository `git clone git@github.com:crazko/kalendario.git`
 - install all dependencies `npm install`
 - create `.env` file with `cp .env.example .env` and put app variables
   - visit [Google API Console](https://console.developers.google.com/)

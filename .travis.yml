@@ -5,17 +5,17 @@ install: npm ci
 
 script: npm run build
 
-after_success: cd dist && zip -r ../calex.zip . && cd ..
+after_success: cd dist && zip -r ../kalendario.zip . && cd ..
 
 deploy:
   provider: releases
   api_key:
     secure: $GH_TOKEN
   file:
-    - calex.zip
+    - kalendario.zip
   skip_cleanup: true
   on:
-    repo: crazko/calex
+    repo: crazko/kalendario
     tags: true
 
 notifications:

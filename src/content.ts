@@ -112,7 +112,7 @@ window.addEventListener('load', () => {
     });
   } else {
     console.error(
-      "[calex] Couldn't find events container element, try to reload the tab.",
+      "[kalendario] Couldn't find events container element, try to reload the tab.",
     );
   }
 });
