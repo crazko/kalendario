@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
+const TerserPlugin = require('terser-webpack-plugin');
 require('dotenv').config();
 
 module.exports = (env, argv) => {
@@ -28,6 +29,9 @@ module.exports = (env, argv) => {
     },
     resolve: {
       extensions: ['.ts'],
+    },
+    optimization: {
+      minimizer: [new TerserPlugin()],
     },
     plugins: [
       new CleanWebpackPlugin({
