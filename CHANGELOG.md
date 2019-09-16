@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [0.3.1] - 2019-09-09
+
+Minor changes related to Chrome Web Store update
+
+## [0.3.0] - 2019-09-09
+
+### Added
+
+- extension homepage https://kalendario.org
+- privacy policy https://kalendario.org/privacy-policy
+- releases in the [Releases section](https://github.com/crazko/kalendario/releases), the most recent version is for [download on Chrome Store](https://chrome.google.com/webstore/detail/ccoehijdbponhcemihobmdpaeenmgchg)
 
 ### Changed
 
