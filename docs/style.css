@@ -73,35 +73,85 @@ nav a {
 }
 
 .download {
-  align-items: center;
   background: #466da7;
   border-radius: 0.5em;
   bottom: 0;
   box-shadow: 0 0.5em 1em 0 rgba(0, 0, 0, 0.3);
-  color: #fff;
-  display: inline-flex;
-  font-size: 1.25rem;
   left: 50%;
+  overflow: hidden;
   padding: 0.5em 1em;
   position: absolute;
-  text-decoration: none;
-  text-transform: uppercase;
   transform: translate(-50%, 50%);
 }
 
-.download:hover {
-  background: #774f74;
+.download:target {
+  animation: download 1s ease infinite alternate;
+  box-shadow: 0 0.5em 1em 0 rgba(0, 0, 0, 0.6);
+}
+
+.download:hover .download__links,
+.download:focus-within .download__links,
+.download:target .download__links {
+  opacity: 1;
 }
 
 .download--home {
-  transform: translate(-50%, calc(3rem + 50%));
+  bottom: -3rem;
+}
+
+.download__title {
+  align-items: center;
+  color: #fff;
+  display: inline-flex;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .download__icon {
   height: 1em;
   width: 1em;
   fill: currentColor;
+}
+
+.download__icon--title {
   margin-right: 0.5em;
+}
+
+.download__icon--links {
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.download__links {
+  background: #466da7;
+  color: #fff;
+  display: flex;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transition: opacity 0.25s ease;
+  width: 100%;
+}
+
+.download__link {
+  align-items: center;
+  background: linear-gradient(to bottom right, #466da7, rgba(37, 73, 101, 0.5));
+  color: #fff;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.download__link:hover,
+.download__link:focus {
+  background-color: #774f74;
 }
 
 main {
@@ -130,7 +180,8 @@ a {
   transition: background 0.25s ease;
 }
 
-a:hover {
+a:hover,
+a:focus {
   background: #f3d4dd;
 }
 
@@ -154,5 +205,14 @@ img {
 @media (min-width: 800px) {
   html {
     font-size: 18px;
+  }
+}
+
+@keyframes download {
+  0% {
+    transform: translate(-50%, 50%) scale(1);
+  }
+  100% {
+    transform: translate(-50%, 50%) scale(1.125);
   }
 }
