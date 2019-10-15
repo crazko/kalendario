@@ -22,6 +22,7 @@ Install from [Chrome Web Store](https://chrome.google.com/webstore/detail/kalend
 Tested in:
 
 - [Chrome](https://www.google.com/chrome/)
+- [Firefox](https://www.mozilla.org/firefox/download/)
 - [Opera](https://www.opera.com/) (you can use Chrome extensions trough [Download Chrome Extensions](https://addons.opera.com/en/extensions/details/download-chrome-extension-9/) addon)
 - [Vivaldi](https://vivaldi.com/)
 
