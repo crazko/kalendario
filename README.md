@@ -15,7 +15,10 @@ Descriptions are displayed in:
 
 ## Installation
 
-Install from [Chrome Web Store](https://chrome.google.com/webstore/detail/kalendario-for-google-calendar/ccoehijdbponhcemihobmdpaeenmgchg).
+Install from:
+
+- [Chrome Web Store](https://chrome.google.com/webstore/detail/kalendario-for-google-calendar/ccoehijdbponhcemihobmdpaeenmgchg).
+- [Firefox Add-ons Portal](https://addons.mozilla.org/firefox/addon/kalendario-for-google-calendar/)
 
 ### Browsers
 
