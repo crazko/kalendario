@@ -12,17 +12,17 @@ export enum type {
 }
 
 export const addEventAction = (id: string, description?: string) => ({
-  type: type.ADD_EVENT as type.ADD_EVENT,
+  type: type.ADD_EVENT as const,
   id,
   description,
 });
 
 export const fetchEventAction = (id: string) => ({
-  type: type.FETCH_EVENT as type.FETCH_EVENT,
+  type: type.FETCH_EVENT as const,
   id,
 });
 
 export const addCalendarListAction = (calendarList: Calendars) => ({
-  type: type.ADD_CALENDAR_LIST as type.ADD_CALENDAR_LIST,
+  type: type.ADD_CALENDAR_LIST as const,
   calendarList,
 });

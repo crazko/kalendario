@@ -56,5 +56,5 @@ export const isEventProcessed = (state: State, eventId: string) =>
 
 export const getCalendarByName = (state: State, calendarName: string) =>
   Object.values(state.calendars).find(
-    calendar => !!calendar && calendar.name === calendarName,
+    calendar => calendar?.name === calendarName,
   );

@@ -62,7 +62,7 @@ const rowsObserverCallback = (entries: IntersectionObserverEntry[]) => {
       }
 
       const calendar = getCalendarByName(store.getState(), calendarName);
-      const calendarId = (calendar && calendar.id) || null;
+      const calendarId = calendar?.id || null;
 
       if (
         !event &&
@@ -133,7 +133,7 @@ const addEventTimeout = (row: HTMLElement) => {
     const interval = window.setInterval(() => {
       const event = getEvent(store.getState(), eventId);
 
-      if (event && event.description) {
+      if (event?.description) {
         addEventDescription(row, event.description);
       }
     }, 1000);
