@@ -1,26 +1,10 @@
 import { createStore } from 'redux';
 
-import {
-  CSSClass,
-  mainElementSelector,
-  mainElementParentID,
-} from './app/types';
+import { CSSClass, mainElementSelector, mainElementParentID } from './app/types';
 import { addEventDescription, getEventDataAttributes } from './app/event';
-import {
-  sendFetchEventMessage,
-  sendFetchCalendarListMessage,
-} from './app/runtime';
-import {
-  fetchEventAction,
-  addEventAction,
-  addCalendarListAction,
-} from './store/actions';
-import {
-  reducers,
-  isEventProcessed,
-  getEvent,
-  getCalendarByName,
-} from './store/reducers';
+import { sendFetchEventMessage, sendFetchCalendarListMessage } from './app/runtime';
+import { fetchEventAction, addEventAction, addCalendarListAction } from './store/actions';
+import { reducers, isEventProcessed, getEvent, getCalendarByName } from './store/reducers';
 
 let storeLogger;
 let rowsObserver: IntersectionObserver;
@@ -43,9 +27,7 @@ const calendarObserverCallback = (mutations: MutationRecord[]) => {
 
     // All rows have been added at once
     if (target.querySelector(mainElementSelector)) {
-      Array.from(target.getElementsByClassName(CSSClass.eventRow)).forEach(
-        row => rowsObserver.observe(row),
-      );
+      Array.from(target.getElementsByClassName(CSSClass.eventRow)).forEach(row => rowsObserver.observe(row));
     }
   });
 };
@@ -65,17 +47,11 @@ const rowsObserverCallback = (entries: IntersectionObserverEntry[]) => {
       const calendar = getCalendarByName(store.getState(), calendarName);
       const calendarId = calendar?.id || null;
 
-      if (
-        !event &&
-        !isEventProcessed(store.getState(), eventId) &&
-        calendarId
-      ) {
+      if (!event && !isEventProcessed(store.getState(), eventId) && calendarId) {
         store.dispatch(fetchEventAction(eventId));
 
         sendFetchEventMessage(calendarId, eventId, fetchedEvent => {
-          store.dispatch(
-            addEventAction(fetchedEvent.id, fetchedEvent.description),
-          );
+          store.dispatch(addEventAction(fetchedEvent.id, fetchedEvent.description));
 
           if (fetchedEvent.description) {
             addEventDescription(row, fetchedEvent.description);
@@ -92,9 +68,7 @@ const rowsObserverCallback = (entries: IntersectionObserverEntry[]) => {
 
 window.addEventListener('DOMContentLoaded', () => {
   // Load calendars
-  sendFetchCalendarListMessage(calendarList =>
-    store.dispatch(addCalendarListAction(calendarList)),
-    );
+  sendFetchCalendarListMessage(calendarList => store.dispatch(addCalendarListAction(calendarList)));
 
   calendarObserver = new MutationObserver(calendarObserverCallback);
 });
@@ -115,13 +89,9 @@ window.addEventListener('load', () => {
     });
 
     // Initial load of events
-    Array.from(mainContentParent.getElementsByClassName(CSSClass.eventRow)).forEach(
-      row => rowsObserver.observe(row),
-    );
+    Array.from(mainContentParent.getElementsByClassName(CSSClass.eventRow)).forEach(row => rowsObserver.observe(row));
   } else {
-    console.error(
-      "[kalendario] Couldn't find events container element, try to reload the tab.",
-    );
+    console.error("[kalendario] Couldn't find events container element, try to reload the tab.");
   }
 });
 
