@@ -1,4 +1,4 @@
-import { initialize, revokeTokens, invalidTokens } from './api/authorization';
+import { initialize, revokeTokens, tokenExpired } from './api/authorization';
 import { fetchEvent, fetchCalendarList } from './api/calendar';
 import { isCalendarIdValid, normalizeCalendarList } from './app/calendar';
 import { message, Request } from './app/runtime';
@@ -9,24 +9,22 @@ chrome.runtime.onInstalled.addListener(details => {
   }
 });
 
-chrome.runtime.onMessage.addListener(
-  (request: Request, sender, sendResponse) => {
-    if (invalidTokens()) {
-      revokeTokens();
+chrome.runtime.onMessage.addListener((request: Request, sender, sendResponse) => {
+  (async () => {
+    if (tokenExpired()) {
+      await revokeTokens();
     }
 
     switch (request.message) {
       case message.FETCH_CALENDAR_LIST:
-        (async () => {
-          try {
-            const calendarList = await fetchCalendarList();
-            sendResponse(normalizeCalendarList(calendarList));
+        try {
+          const calendarList = await fetchCalendarList();
+          sendResponse(normalizeCalendarList(calendarList));
 
-            console.log('Sending calendar list');
-          } catch (error) {
-            console.error(error);
-          }
-        })();
+          console.log('Sending calendar list');
+        } catch (error) {
+          console.error(error);
+        }
 
         break;
 
@@ -39,34 +37,29 @@ chrome.runtime.onMessage.addListener(
             description: undefined,
           });
 
-          console.log(
-            `Event '${eventId}' doesn't have proper calendar '${calendarId}'.`,
-          );
+          console.log(`Event '${eventId}' doesn't have proper calendar '${calendarId}'.`);
 
           break;
         }
 
-        (async () => {
-          try {
-            const event = await fetchEvent(calendarId, eventId);
-            sendResponse({
-              id: eventId,
-              description: event.description,
-            });
+        try {
+          const event = await fetchEvent(calendarId, eventId);
 
-            console.log(
-              `Sending event "${event.summary}" with ID "${event.id}".`,
-            );
-          } catch (error) {
-            console.error(error);
-          }
-        })();
+          sendResponse({
+            id: eventId,
+            description: event.description,
+          });
+
+          console.log(`Sending event "${event.summary}" with ID "${event.id}".`);
+        } catch (error) {
+          console.error(error);
+        }
 
         break;
     }
+  })();
 
-    // Signalize asynchronous call of `sendResponse`
-    // @see https://developer.chrome.com/extensions/messaging#simple
-    return true;
-  },
-);
+  // Signalize asynchronous call of `sendResponse`
+  // @see https://developer.chrome.com/extensions/messaging#simple
+  return true;
+});

@@ -73,7 +73,7 @@ export const initialize = () => {
       } else {
         console.log(chrome.runtime.lastError);
       }
-    },
+    }
   );
 };
 
@@ -91,28 +91,23 @@ const validateTokens = () => {
     });
 };
 
-export const revokeTokens = () => {
+export const revokeTokens = async () => {
   let params = `?refresh_token=${localStorage['refresh_token']}`;
   params += `&client_id=${settings.client_id}`;
   params += `&client_secret=${settings.client_secret}`;
   params += '&grant_type=refresh_token';
 
-  fetch(`${apiUrl.token}${params}`, {
+  const data = await fetch(`${apiUrl.token}${params}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-  })
-    .then(response => response.json())
-    .then(data => {
-      localStorage['access_token'] = data.access_token;
-      localStorage['expiration'] = getExpirationDate(new Date(), 45);
-    })
-    .catch(error => {
-      console.log(error);
-    });
+  });
+
+  const { access_token } = await data.json();
+
+  localStorage['access_token'] = access_token;
+  localStorage['expiration'] = getExpirationDate(new Date(), 45);
 };
 
-export const invalidTokens = () =>
-  typeof localStorage['expiration'] === undefined ||
-  localStorage['expiration'] < new Date().getTime();
+export const tokenExpired = () => Number(localStorage.expiration ?? 0) < new Date().getTime();
