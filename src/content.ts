@@ -24,6 +24,7 @@ import {
 
 let storeLogger;
 let rowsObserver: IntersectionObserver;
+let calendarObserver: MutationObserver;
 
 const store = createStore(reducers);
 
@@ -89,27 +90,34 @@ const rowsObserverCallback = (entries: IntersectionObserverEntry[]) => {
   });
 };
 
-const calendarObserver = new MutationObserver(calendarObserverCallback);
-
-window.addEventListener('load', () => {
+window.addEventListener('DOMContentLoaded', () => {
   // Load calendars
   sendFetchCalendarListMessage(calendarList =>
     store.dispatch(addCalendarListAction(calendarList)),
-  );
+    );
 
+  calendarObserver = new MutationObserver(calendarObserverCallback);
+});
+
+window.addEventListener('load', () => {
   // Start observing calendar
   const mainContentParent = document.getElementById(mainElementParentID);
 
   if (mainContentParent) {
+    rowsObserver = new IntersectionObserver(rowsObserverCallback, {
+      root: mainContentParent,
+      threshold: 0,
+    });
+
     calendarObserver.observe(mainContentParent, {
       childList: true,
       subtree: true,
     });
 
-    rowsObserver = new IntersectionObserver(rowsObserverCallback, {
-      root: mainContentParent,
-      threshold: 0,
-    });
+    // Initial load of events
+    Array.from(mainContentParent.getElementsByClassName(CSSClass.eventRow)).forEach(
+      row => rowsObserver.observe(row),
+    );
   } else {
     console.error(
       "[kalendario] Couldn't find events container element, try to reload the tab.",
