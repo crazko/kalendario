@@ -2,7 +2,7 @@
   "name": "__MSG_extName__",
   "short_name": "__MSG_extShortName__",
   "description": "__MSG_extDesc__",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "homepage_url": "https://kalendario.org",
   "manifest_version": 2,
   "default_locale": "en",
@@ -23,12 +23,7 @@
       "run_at": "document_start"
     }
   ],
-  "permissions": [
-    "identity",
-    "tabs",
-    "https://www.googleapis.com/*",
-    "https://accounts.google.com/*"
-  ],
+  "permissions": ["identity", "tabs", "https://www.googleapis.com/*", "https://accounts.google.com/*"],
   "oauth2": {
     "client_id": "__CLIENT_ID__",
     "scopes": ["https://www.googleapis.com/auth/calendar.readonly"]
