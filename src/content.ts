@@ -1,29 +1,14 @@
 import { createStore } from 'redux';
 
-import {
-  CSSClass,
-  mainElementSelector,
-  mainElementParentID,
-} from './app/types';
+import { CSSClass, mainElementSelector, mainElementParentID } from './app/types';
 import { addEventDescription, getEventDataAttributes } from './app/event';
-import {
-  sendFetchEventMessage,
-  sendFetchCalendarListMessage,
-} from './app/runtime';
-import {
-  fetchEventAction,
-  addEventAction,
-  addCalendarListAction,
-} from './store/actions';
-import {
-  reducers,
-  isEventProcessed,
-  getEvent,
-  getCalendarByName,
-} from './store/reducers';
+import { sendFetchEventMessage, sendFetchCalendarListMessage } from './app/runtime';
+import { fetchEventAction, addEventAction, addCalendarListAction } from './store/actions';
+import { reducers, isEventProcessed, getEvent, getCalendarByName } from './store/reducers';
 
 let storeLogger;
 let rowsObserver: IntersectionObserver;
+let calendarObserver: MutationObserver;
 
 const store = createStore(reducers);
 
@@ -42,9 +27,7 @@ const calendarObserverCallback = (mutations: MutationRecord[]) => {
 
     // All rows have been added at once
     if (target.querySelector(mainElementSelector)) {
-      Array.from(target.getElementsByClassName(CSSClass.eventRow)).forEach(
-        row => rowsObserver.observe(row),
-      );
+      Array.from(target.getElementsByClassName(CSSClass.eventRow)).forEach(row => rowsObserver.observe(row));
     }
   });
 };
@@ -62,19 +45,13 @@ const rowsObserverCallback = (entries: IntersectionObserverEntry[]) => {
       }
 
       const calendar = getCalendarByName(store.getState(), calendarName);
-      const calendarId = (calendar && calendar.id) || null;
+      const calendarId = calendar?.id || null;
 
-      if (
-        !event &&
-        !isEventProcessed(store.getState(), eventId) &&
-        calendarId
-      ) {
+      if (!event && !isEventProcessed(store.getState(), eventId) && calendarId) {
         store.dispatch(fetchEventAction(eventId));
 
         sendFetchEventMessage(calendarId, eventId, fetchedEvent => {
-          store.dispatch(
-            addEventAction(fetchedEvent.id, fetchedEvent.description),
-          );
+          store.dispatch(addEventAction(fetchedEvent.id, fetchedEvent.description));
 
           if (fetchedEvent.description) {
             addEventDescription(row, fetchedEvent.description);
@@ -89,31 +66,32 @@ const rowsObserverCallback = (entries: IntersectionObserverEntry[]) => {
   });
 };
 
-const calendarObserver = new MutationObserver(calendarObserverCallback);
+window.addEventListener('DOMContentLoaded', () => {
+  // Load calendars
+  sendFetchCalendarListMessage(calendarList => store.dispatch(addCalendarListAction(calendarList)));
+
+  calendarObserver = new MutationObserver(calendarObserverCallback);
+});
 
 window.addEventListener('load', () => {
-  // Load calendars
-  sendFetchCalendarListMessage(calendarList =>
-    store.dispatch(addCalendarListAction(calendarList)),
-  );
-
   // Start observing calendar
   const mainContentParent = document.getElementById(mainElementParentID);
 
   if (mainContentParent) {
+    rowsObserver = new IntersectionObserver(rowsObserverCallback, {
+      root: mainContentParent,
+      threshold: 0,
+    });
+
     calendarObserver.observe(mainContentParent, {
       childList: true,
       subtree: true,
     });
 
-    rowsObserver = new IntersectionObserver(rowsObserverCallback, {
-      root: mainContentParent,
-      threshold: 0,
-    });
+    // Initial load of events
+    Array.from(mainContentParent.getElementsByClassName(CSSClass.eventRow)).forEach(row => rowsObserver.observe(row));
   } else {
-    console.error(
-      "[kalendario] Couldn't find events container element, try to reload the tab.",
-    );
+    console.error("[kalendario] Couldn't find events container element, try to reload the tab.");
   }
 });
 
@@ -133,7 +111,7 @@ const addEventTimeout = (row: HTMLElement) => {
     const interval = window.setInterval(() => {
       const event = getEvent(store.getState(), eventId);
 
-      if (event && event.description) {
+      if (event?.description) {
         addEventDescription(row, event.description);
       }
     }, 1000);

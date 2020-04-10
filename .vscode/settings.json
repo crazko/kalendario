@@ -1,3 +1,4 @@
 {
-  "liveServer.settings.root": "/docs/"
+  "liveServer.settings.root": "/docs/",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

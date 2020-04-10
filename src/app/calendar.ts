@@ -11,12 +11,7 @@ export const isCalendarIdValid = (calendarId: string) =>
 
 export const normalizeCalendarList = (
   calendarList: gapi.client.calendar.CalendarList,
-): Calendars => {
-  if (!calendarList.items) {
-    return {};
-  }
-
-  return calendarList.items.reduce((list: Calendars, calendar) => {
+): Calendars =>  calendarList.items?.reduce((list: Calendars, calendar) => {
     if (calendar.id && calendar.summary) {
       list[calendar.id] = {
         id: calendar.id,
@@ -25,5 +20,4 @@ export const normalizeCalendarList = (
     }
 
     return list;
-  }, {});
-};
+  }, {}) ?? {};

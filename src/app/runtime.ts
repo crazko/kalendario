@@ -11,7 +11,7 @@ export enum message {
 }
 
 const fetchEventMessage = (calendarId: string, eventId: string) => ({
-  message: message.FETCH_EVENT as message.FETCH_EVENT,
+  message: message.FETCH_EVENT as const,
   calendarId,
   eventId,
 });
@@ -26,7 +26,7 @@ export const sendFetchEventMessage = (
   );
 
 const fetchCalendarListMessage = () => ({
-  message: message.FETCH_CALENDAR_LIST as message.FETCH_CALENDAR_LIST,
+  message: message.FETCH_CALENDAR_LIST as const,
 });
 
 export const sendFetchCalendarListMessage = (
