@@ -13,6 +13,12 @@ Descriptions are displayed in:
 
 ![Kalendario in Google Calendar](docs/live.gif)
 
+## FAQ
+
+### What about day/week/month/year views?
+
+There is no plan to update those pages as there is not enough space on them to display event descriptions content.
+
 ## Installation
 
 Install from:
