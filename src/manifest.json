@@ -23,7 +23,7 @@
       "run_at": "document_start"
     }
   ],
-  "permissions": ["identity", "tabs", "https://www.googleapis.com/*", "https://accounts.google.com/*"],
+  "permissions": ["identity", "https://www.googleapis.com/*", "https://accounts.google.com/*"],
   "oauth2": {
     "client_id": "__CLIENT_ID__",
     "scopes": ["https://www.googleapis.com/auth/calendar.readonly"]
